@@ -1,0 +1,2834 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="신흥 부동산 매물 장부 — 원룸부터 토지까지 매물과 손님을 종류별로 정리하는 중개사무소 관리대장">
+<meta name="theme-color" content="#ffffff">
+<title>신흥 부동산 매물 장부</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwMDcxZTMiLz4KICA8cGF0aCBkPSJNMTMgMzAuNSAzMiAxNWwxOSAxNS41VjUwYTIgMiAwIDAgMS0yIDJIMzhWMzcuNUgyNlY1MkgxNWEyIDIgMCAwIDEtMi0yeiIgZmlsbD0iI2ZmZiIvPgo8L3N2Zz4K" type="image/svg+xml">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* ==========================================================================
+   신흥 부동산 매물 장부 — styles.css
+   화면 색·간격·모양을 모두 이 파일에서 정합니다.
+   맨 위 :root 값만 바꾸면 사이트 전체 분위기가 한 번에 바뀝니다.
+   ========================================================================== */
+
+:root{
+  color-scheme: light;            /* 컴퓨터가 어두운 모드여도 화면은 흰색으로 */
+
+  /* 바탕과 글자 */
+  --bg:             #ffffff;
+  --surface:        #ffffff;
+  --surface-2:      #f7f7f9;
+  --surface-sunken: #f4f4f7;
+  --separator:      rgba(60,60,67,.14);
+  --separator-firm: rgba(60,60,67,.24);
+  --fill:           rgba(118,118,128,.09);
+  --fill-strong:    rgba(118,118,128,.16);
+  --label:          #1d1d1f;
+  --label-2:        #6e6e73;
+  --label-3:        #8e8e93;
+
+  /* 강조색 */
+  --tint:           #0071e3;
+  --tint-press:     #0060c0;
+  --on-tint:        #ffffff;
+  --tint-wash:      rgba(0,113,227,.09);
+
+  /* 상태색 */
+  --green:          #1a7f37;
+  --green-wash:     rgba(52,199,89,.15);
+  --orange:         #9a5b00;
+  --orange-wash:    rgba(255,149,0,.15);
+  --gray:           #6e6e73;
+  --gray-wash:      rgba(118,118,128,.13);
+  --red:            #d70015;
+
+  /* 유리 효과 상단바 */
+  --glass:          rgba(255,255,255,.78);
+
+  /* 모양 */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.04), 0 1px 1px rgba(0,0,0,.03);
+  --shadow-2: 0 4px 16px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.04);
+  --shadow-3: 0 24px 64px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.08);
+
+  /* 움직임 — 애플 시트 곡선 */
+  --ease: cubic-bezier(.32,.72,0,1);
+}
+
+/* ---------- 기본 ---------- */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  overflow-x:hidden;          /* 옆으로 밀리지 않게 */
+  background:var(--bg);
+  color:var(--label);
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Apple SD Gothic Neo",
+              "Pretendard Variable", Pretendard, "Segoe UI", "Malgun Gothic", sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  letter-spacing:-.011em;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit; color:inherit; letter-spacing:inherit}
+h1,h2,h3,h4,p,dl,dd{margin:0}
+.hidden, [hidden]{display:none !important}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum"}
+:focus-visible{outline:3px solid color-mix(in srgb, var(--tint) 55%, transparent); outline-offset:2px; border-radius:6px}
+svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- 버튼 ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  border:none; background:var(--fill); color:var(--label);
+  padding:0 14px; height:34px; border-radius:999px;
+  font-size:14px; font-weight:500; cursor:pointer; white-space:nowrap;
+  transition:background .18s var(--ease), transform .12s var(--ease), opacity .18s;
+}
+.btn:hover{background:var(--fill-strong)}
+.btn:active{transform:scale(.96)}
+.btn.primary{background:var(--tint); color:var(--on-tint); font-weight:600}
+.btn.primary:hover{background:var(--tint-press)}
+.btn.quiet{background:transparent; color:var(--tint)}
+.btn.quiet:hover{background:var(--fill)}
+.btn.destructive{background:transparent; color:var(--red)}
+.btn.destructive:hover{background:color-mix(in srgb, var(--red) 12%, transparent)}
+.btn.icon-btn{width:34px; padding:0}
+.btn svg{width:17px;height:17px}
+
+/* ---------- 상단 바 ---------- */
+.topbar{
+  position:sticky; top:0; z-index:30;
+  background:var(--glass);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--separator);
+}
+.topbar-inner{
+  max-width:1360px; margin:0 auto;
+  display:flex; align-items:center; gap:16px;
+  padding:10px 22px; padding-left:max(22px, env(safe-area-inset-left));
+}
+.brand{display:flex; align-items:center; gap:9px; min-width:0}
+.brand-mark{width:26px;height:26px; fill:var(--tint); stroke:none; flex:none}
+.brand-text{display:flex; flex-direction:column; line-height:1.15; min-width:0}
+.brand-text b{font-size:15px; font-weight:600; letter-spacing:-.02em; white-space:nowrap}
+.brand-text i{font-size:11.5px; font-style:normal; color:var(--label-3); white-space:nowrap}
+
+.seg{
+  position:relative; display:flex; margin:0 auto;
+  background:var(--fill); border-radius:9px; padding:2px;
+}
+.seg-thumb{
+  position:absolute; top:2px; left:2px; bottom:2px; width:calc(50% - 2px);
+  background:var(--surface); border-radius:7px; box-shadow:var(--shadow-1);
+  transition:transform .3s var(--ease);
+}
+.seg[data-i="1"] .seg-thumb{transform:translateX(100%)}
+.seg-btn{
+  position:relative; z-index:1; border:none; background:none; cursor:pointer;
+  padding:5px 26px; font-size:13.5px; font-weight:500; color:var(--label-2);
+  transition:color .2s;
+}
+.seg-btn[aria-selected="true"]{color:var(--label); font-weight:600}
+
+.top-actions{display:flex; align-items:center; gap:8px; margin-left:auto}
+.saved{font-size:12px; color:var(--label-3); opacity:0; transition:opacity .4s}
+.saved.on{opacity:1}
+
+/* ---------- 레이아웃 ---------- */
+.layout{
+  max-width:1360px; margin:0 auto;
+  display:grid; grid-template-columns:216px minmax(0,1fr);
+  gap:26px; padding:24px 22px 96px; align-items:start;
+}
+.layout > *{min-width:0}
+.main{min-width:0}
+.sidebar{position:sticky; top:80px; display:flex; flex-direction:column; gap:6px; min-width:0}
+.side-title{
+  font-size:11.5px; font-weight:600; color:var(--label-3);
+  letter-spacing:.02em; padding:0 12px 6px;
+}
+.side-title.spaced{padding-top:20px}
+.side-list{display:flex; flex-direction:column; gap:1px}
+.side-item{
+  display:flex; align-items:center; gap:10px;
+  border:none; background:none; cursor:pointer; width:100%; text-align:left;
+  padding:8px 12px; border-radius:9px; color:var(--label); font-size:14px;
+  transition:background .15s;
+}
+.side-item:hover{background:var(--fill)}
+.side-item[aria-current="true"]{background:var(--tint); color:var(--on-tint); font-weight:600}
+.side-item svg{width:17px;height:17px; color:var(--label-3); flex:none}
+.side-item[aria-current="true"] svg{color:var(--on-tint)}
+.side-item .n{margin-left:auto; font-size:12.5px; color:var(--label-3); font-variant-numeric:tabular-nums}
+.side-item[aria-current="true"] .n{color:var(--on-tint); opacity:.8}
+
+.stats{display:flex; flex-direction:column; gap:1px}
+.stat{display:flex; align-items:baseline; gap:8px; padding:6px 12px; border-radius:9px}
+.stat dt{font-size:13.5px; color:var(--label-2)}
+.stat dd{margin-left:auto; font-size:14px; font-weight:600; font-variant-numeric:tabular-nums}
+.stat.is-green dd{color:var(--green)}
+.stat.is-orange dd{color:var(--orange)}
+
+/* ---------- 검색·필터 ---------- */
+.toolbar{display:flex; flex-direction:column; gap:12px; margin-bottom:14px}
+.searchwrap{position:relative; display:flex; align-items:center}
+.search-ico{position:absolute; left:13px; color:var(--label-3); pointer-events:none}
+.search{
+  width:100%; height:40px; padding:0 62px 0 40px;
+  background:var(--surface); border:1px solid var(--separator); border-radius:var(--r-md);
+  box-shadow:var(--shadow-1); transition:border-color .18s, box-shadow .18s;
+}
+.search::placeholder{color:var(--label-3)}
+.search:focus{outline:none; border-color:var(--tint); box-shadow:0 0 0 4px var(--tint-wash)}
+.search::-webkit-search-cancel-button{-webkit-appearance:none}
+.kbd{
+  position:absolute; right:10px; font-size:11.5px; color:var(--label-3);
+  background:var(--fill); border-radius:6px; padding:2px 7px; pointer-events:none;
+}
+.search:focus ~ .kbd{opacity:0}
+
+.filters{display:flex; align-items:center; gap:6px; flex-wrap:wrap}
+.chips{display:flex; gap:6px; flex-wrap:wrap}
+.chip{
+  border:none; background:var(--fill); color:var(--label-2);
+  height:30px; padding:0 13px; border-radius:999px; font-size:13.5px; cursor:pointer;
+  transition:background .16s, color .16s, transform .12s var(--ease);
+}
+.chip:hover{background:var(--fill-strong)}
+.chip:active{transform:scale(.95)}
+.chip[aria-pressed="true"]{background:var(--tint); color:var(--on-tint); font-weight:600}
+.chip-div{width:1px; height:18px; background:var(--separator-firm); margin:0 4px}
+.sortwrap{margin-left:auto; position:relative}
+.sortwrap select{
+  height:30px; border:none; background:var(--fill); color:var(--label-2);
+  border-radius:999px; padding:0 10px; font-size:13.5px; cursor:pointer;
+}
+.resultline{font-size:12.5px; color:var(--label-3); padding:0 4px 8px}
+
+/* ---------- 목록 카드 ---------- */
+.card{
+  background:var(--surface); border:1px solid var(--separator);
+  border-radius:var(--r-lg); box-shadow:var(--shadow-2); overflow:hidden;
+}
+.tablewrap{overflow-x:auto; -webkit-overflow-scrolling:touch}
+table{border-collapse:collapse; width:100%; min-width:880px}
+thead th{
+  position:sticky; top:0; z-index:2;
+  text-align:left; font-size:12px; font-weight:600; color:var(--label-3);
+  padding:11px 16px; background:var(--surface-2);
+  border-bottom:1px solid var(--separator); white-space:nowrap;
+}
+thead th.sortable{cursor:pointer; user-select:none}
+thead th.sortable:hover{color:var(--label)}
+thead th .caret{font-size:10px; opacity:.9; margin-left:3px}
+tbody td{padding:13px 16px; border-bottom:1px solid var(--separator); vertical-align:middle}
+tbody tr{cursor:pointer; transition:background .12s}
+tbody tr:hover{background:var(--surface-2)}
+tbody tr[data-active="1"]{background:var(--tint-wash)}
+tbody tr:last-child td{border-bottom:none}
+.t-main{font-weight:600; letter-spacing:-.015em}
+.t-sub{color:var(--label-2); font-size:12.5px; margin-top:1px}
+.t-code{color:var(--label-3); font-size:12.5px; font-variant-numeric:tabular-nums}
+.money{font-weight:600; font-variant-numeric:tabular-nums; letter-spacing:-.02em}
+
+.tag{
+  display:inline-block; padding:3px 9px; border-radius:7px;
+  background:var(--fill); font-size:12.5px; font-weight:500; white-space:nowrap;
+}
+.badge{
+  display:inline-flex; align-items:center; gap:5px; padding:3px 10px 3px 8px;
+  border-radius:999px; font-size:12.5px; font-weight:600; white-space:nowrap;
+}
+.badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+.badge.b-go{background:var(--green-wash); color:var(--green)}
+.badge.b-hold{background:var(--orange-wash); color:var(--orange)}
+.badge.b-done{background:var(--gray-wash); color:var(--gray)}
+
+/* 줄 끝 삭제(✕) 단추 */
+.rowact{width:46px; text-align:right; padding-left:0 !important}
+.xbtn{
+  width:26px; height:26px; border:none; border-radius:50%; background:transparent;
+  color:var(--label-3); cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
+  opacity:0; transition:opacity .15s, background .15s, color .15s; flex:none;
+}
+tbody tr:hover .xbtn, .row:hover .xbtn, .xbtn:focus-visible{opacity:1}
+.xbtn:hover{background:color-mix(in srgb, var(--red) 12%, transparent); color:var(--red)}
+.xbtn svg{width:15px; height:15px; stroke-width:2.1}
+@media (hover:none){ .xbtn{opacity:1} }
+
+/* 맨 아래 '+ 추가' 줄 */
+.addrow td{padding:0 !important; border-bottom:none !important}
+.addbtn{
+  display:flex; align-items:center; gap:7px; width:100%;
+  border:none; background:transparent; color:var(--tint);
+  padding:12px 16px; font-size:14px; font-weight:600; cursor:pointer;
+  transition:background .15s;
+}
+.addbtn:hover{background:var(--tint-wash)}
+.addbtn svg{width:17px; height:17px; stroke-width:2}
+.rows > .addbtn{border-top:1px solid var(--separator)}
+
+/* 떠 있는 + 단추 (좁은 화면) */
+.fab{
+  position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom));
+  width:54px; height:54px; border:none; border-radius:50%;
+  background:var(--tint); color:var(--on-tint); box-shadow:var(--shadow-2);
+  cursor:pointer; display:none; align-items:center; justify-content:center; z-index:35;
+  transition:transform .12s var(--ease);
+}
+.fab:active{transform:scale(.93)}
+.fab svg{width:24px; height:24px; stroke-width:2.2}
+
+/* 모바일 카드 목록 */
+.rows{display:none}
+.row{
+  display:flex; gap:10px; align-items:center; width:100%; text-align:left;
+  border:none; background:none; padding:14px 16px; cursor:pointer;
+  border-bottom:1px solid var(--separator);
+}
+.row:last-of-type{border-bottom:none}
+.row:active{background:var(--surface-2)}
+.row-body{flex:1; min-width:0; align-self:flex-start}
+.row-top{display:flex; align-items:center; gap:7px; flex-wrap:wrap}
+.row-money{margin-top:3px}
+.row-meta{color:var(--label-2); font-size:12.5px; margin-top:2px}
+.chev{color:var(--label-3); align-self:center; flex:none}
+
+/* 빈 화면 */
+.empty{padding:64px 24px; text-align:center}
+.empty svg{width:38px;height:38px; color:var(--label-3); margin-bottom:12px}
+.empty h4{font-size:17px; font-weight:600; margin-bottom:4px}
+.empty p{color:var(--label-2); font-size:14px; margin-bottom:16px}
+
+/* 예시 안내 */
+.notice{
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  background:var(--orange-wash); color:var(--orange);
+  padding:11px 16px; border-radius:var(--r-md); margin-bottom:14px; font-size:13.5px;
+}
+.notice b{font-weight:600}
+.notice .btn{margin-left:auto; background:color-mix(in srgb, var(--orange) 18%, transparent); color:var(--orange)}
+
+/* ---------- 상세 패널 ---------- */
+.scrim{position:fixed; inset:0; background:rgba(0,0,0,.28); z-index:40; opacity:0; transition:opacity .3s var(--ease)}
+.scrim.on{opacity:1}
+.detail{
+  position:fixed; top:0; right:0; height:100dvh; width:min(440px,100%); z-index:50;
+  background:var(--surface); border-left:1px solid var(--separator);
+  display:flex; flex-direction:column;
+  transform:translateX(101%); box-shadow:var(--shadow-3);
+  transition:transform .38s var(--ease);
+}
+.detail.closed{display:none}     /* 닫혀 있을 땐 아예 없애서 가로 스크롤이 생기지 않게 */
+.detail.on{transform:none}
+.detail-head{display:flex; align-items:flex-start; gap:12px; padding:16px 20px 12px; border-bottom:1px solid var(--separator)}
+.detail-title{min-width:0}
+.detail-title h3{font-size:20px; font-weight:600; letter-spacing:-.02em}
+.detail-title p{font-size:13px; color:var(--label-3); margin-top:2px}
+.detail-body{flex:1; overflow-y:auto; padding:18px 20px 26px; -webkit-overflow-scrolling:touch}
+.detail-foot{display:flex; gap:8px; padding:12px 20px; padding-bottom:max(12px, env(safe-area-inset-bottom)); border-top:1px solid var(--separator)}
+.detail-foot .destructive{margin-left:auto}
+
+.hero-money{font-size:30px; font-weight:600; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.hero-money small{font-size:15px; font-weight:500; color:var(--label-3); margin-left:4px}
+.hero-sub{color:var(--label-2); font-size:13.5px; margin-top:2px}
+
+.statusbar{display:flex; gap:6px; margin:16px 0 4px}
+.statusbar .chip{flex:1}
+
+.group{margin-top:22px}
+.group h4{font-size:12px; font-weight:600; color:var(--label-3); padding:0 4px 7px}
+.rowsbox{background:var(--surface-2); border:1px solid var(--separator); border-radius:var(--r-md); overflow:hidden}
+.kv{display:flex; gap:14px; padding:10px 14px; border-bottom:1px solid var(--separator); font-size:14px}
+.kv:last-child{border-bottom:none}
+.kv dt{color:var(--label-2); flex:none; width:82px}
+.kv dd{flex:1; text-align:right; word-break:break-word}
+.kv dd.left{text-align:left; white-space:pre-wrap}
+.kv .copy{
+  border:none; background:none; color:var(--tint); cursor:pointer; padding:0 0 0 8px; font-size:13px;
+}
+
+/* ---------- 등록·수정 시트 ---------- */
+.modal{
+  position:fixed; inset:0; z-index:60; display:flex; align-items:flex-end; justify-content:center;
+  background:rgba(0,0,0,.35); padding:0;
+  opacity:0; transition:opacity .28s var(--ease);
+}
+.modal.on{opacity:1}
+@media (min-width:721px){ .modal{align-items:center; padding:28px 20px; overflow-y:auto} }
+.sheet{
+  background:var(--surface); width:min(760px,100%);
+  border-radius:var(--r-xl) var(--r-xl) 0 0; box-shadow:var(--shadow-3);
+  max-height:92dvh; display:flex; flex-direction:column;
+  transform:translateY(28px); transition:transform .34s var(--ease);
+}
+.modal.on .sheet{transform:none}
+@media (min-width:721px){ .sheet{border-radius:var(--r-xl); margin:auto; max-height:none} }
+.sheet-head{
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:10px;
+  padding:14px 16px; border-bottom:1px solid var(--separator);
+}
+.sheet-head h3{font-size:16px; font-weight:600; text-align:center; white-space:nowrap}
+.sheet-head .btn.quiet{justify-self:start}
+.sheet-head-right{display:flex; gap:8px; justify-self:end}
+.sheet-body{padding:6px 20px 26px; overflow-y:auto}
+
+.fset{margin-top:20px}
+.fset h4{font-size:12px; font-weight:600; color:var(--label-3); padding:0 4px 8px}
+.grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px}
+.f{display:flex; flex-direction:column; gap:5px}
+.f.w2{grid-column:span 2}
+.f.w4{grid-column:span 4}
+.f label{font-size:12.5px; color:var(--label-2); padding-left:2px}
+.f input, .f select, .f textarea{
+  width:100%; height:38px; padding:0 12px;
+  background:var(--surface-sunken); border:1px solid transparent; border-radius:10px;
+  transition:border-color .16s, background .16s, box-shadow .16s;
+}
+.f textarea{height:auto; min-height:84px; padding:10px 12px; resize:vertical; font-family:inherit; line-height:1.5}
+.f input:focus, .f select:focus, .f textarea:focus{
+  outline:none; background:var(--surface); border-color:var(--tint); box-shadow:0 0 0 4px var(--tint-wash);
+}
+.f .hint{font-size:11.5px; color:var(--label-3); padding-left:2px}
+.picks{display:flex; flex-wrap:wrap; gap:6px}
+.picks label{
+  display:inline-flex; align-items:center; gap:6px; cursor:pointer;
+  background:var(--fill); border-radius:999px; padding:7px 14px; font-size:13.5px; color:var(--label-2);
+  transition:background .16s, color .16s;
+}
+.picks label:has(input:checked){background:var(--tint); color:var(--on-tint); font-weight:600}
+.picks input{position:absolute; opacity:0; width:0; height:0}
+
+/* ---------- 알림 ---------- */
+.toast{
+  position:fixed; left:50%; bottom:26px; transform:translate(-50%, 16px);
+  display:flex; align-items:center; gap:14px; z-index:80;
+  background:rgba(28,28,30,.94); color:#fff;
+  -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px);
+  padding:11px 18px; border-radius:999px; font-size:13.5px; box-shadow:var(--shadow-2);
+  opacity:0; pointer-events:none; transition:opacity .24s var(--ease), transform .24s var(--ease);
+  max-width:calc(100vw - 32px);
+}
+.toast.on{opacity:1; transform:translate(-50%,0); pointer-events:auto}
+.toast-action{border:none; background:none; color:#4da3ff; font-weight:600; cursor:pointer; padding:0; white-space:nowrap}
+
+/* ---------- 중간 너비 (태블릿) ---------- */
+@media (max-width:1000px){
+  .layout{grid-template-columns:1fr; gap:16px; padding:16px 16px 96px}
+  .sidebar{position:static; flex-direction:column}
+  .side-list{flex-direction:row; overflow-x:auto; gap:6px; padding-bottom:4px; scrollbar-width:none}
+  .side-list::-webkit-scrollbar{display:none}
+  .side-item{width:auto; white-space:nowrap; background:var(--surface); border:1px solid var(--separator)}
+  .side-item[aria-current="true"]{border-color:var(--tint)}
+  .stats{flex-direction:row; flex-wrap:wrap; gap:6px}
+  .stat{background:var(--surface); border:1px solid var(--separator); padding:6px 12px}
+  .stat dd{margin-left:6px}
+}
+
+@media (max-width:720px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
+  .f.w4{grid-column:span 2}
+  .sheet-body{padding:6px 16px 24px}
+  .toast{bottom:18px; left:16px; right:16px; transform:translateY(16px); justify-content:space-between}
+  .toast.on{transform:none}
+  /* 손가락으로 누르기 편한 크기 */
+  .f input, .f select, .f textarea{height:42px; font-size:16px}   /* 16px 이상이라야 아이폰에서 확대되지 않습니다 */
+  .f textarea{height:auto; min-height:88px}
+  .picks label{padding:9px 15px; font-size:14px}
+  .sheet-head{padding:12px}
+  .sheet-head h3{font-size:15px}
+  #fDraft{padding:0 11px; font-size:13px}
+  .search{font-size:16px}
+  .detail-foot .btn, .sheet-head .btn{height:36px}
+
+  /* 상단 바 */
+  .topbar-inner{flex-wrap:wrap; gap:8px; padding:8px 12px}
+  .brand-text i{display:none}
+  .brand-mark{width:23px; height:23px}
+  .brand-text b{font-size:14.5px}
+  .seg{order:3; width:100%; margin:0}
+  .seg-btn{flex:1; padding:7px 0; font-size:14px}
+  .top-actions{margin-left:auto; gap:6px}
+  .top-actions .btn span{display:none}
+  .top-actions .btn{width:32px; height:32px; padding:0}
+  .top-actions .btn.primary{width:auto; padding:0 13px}
+  .top-actions .btn.primary span{display:inline}
+  .saved, .kbd{display:none}
+
+  /* 본문 — 목록이 빨리 나오도록 위쪽을 최대한 줄입니다 */
+  .layout{grid-template-columns:1fr; gap:10px; padding:12px 0 96px}
+  .sidebar{padding:0 12px; gap:8px}
+  .main{padding:0 12px}
+  .side-title{display:none}
+
+  /* 종류 칩: 화면 끝까지 밀어서 넘겨 보기 */
+  .side-list{margin:0 -12px; padding:1px 12px}
+  .side-item{width:auto; white-space:nowrap; background:var(--surface); border:1px solid var(--separator); padding:7px 13px}
+  .side-item[aria-current="true"]{border-color:var(--tint)}
+  .side-item svg{display:none}
+
+  /* '한눈에'는 한 줄짜리 요약으로 */
+  .stats{
+    flex-direction:row; flex-wrap:nowrap; gap:0; overflow-x:auto;
+    margin:0 -12px; padding:0 12px; scrollbar-width:none;
+  }
+  .stats::-webkit-scrollbar{display:none}
+  .stat{
+    background:none; border:none; padding:0; margin-right:14px;
+    font-size:12.5px; white-space:nowrap;
+  }
+  .stat dt{font-size:12.5px; color:var(--label-3)}
+  .stat dd{margin-left:5px; font-size:12.5px}
+
+  /* 휴대폰에서는 파일 직접 저장이 안 되므로 감춥니다 */
+  .filebar{display:none}
+
+  /* 안내 줄 압축 */
+  .notice, .draftbar{padding:9px 12px; font-size:12.5px; gap:7px; margin-bottom:10px}
+  .notice .btn, .draftbar .btn{height:28px; font-size:12px; padding:0 11px}
+  .hide-sm{display:none}
+
+  /* 검색·필터 한 줄로 넘겨 보기 */
+  .toolbar{gap:8px; margin-bottom:10px}
+  .search{height:38px}
+  .filters{
+    flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;
+    margin:0 -12px; padding:0 12px 2px;
+  }
+  .filters::-webkit-scrollbar{display:none}
+  .chips{flex-wrap:nowrap}
+  .chip{height:29px}
+  .sortwrap{margin-left:0; flex:none}
+  .sortwrap select{width:auto}
+  .resultline{padding:0 2px 6px}
+
+  /* 목록 */
+  .card{border-radius:14px}
+  .tablewrap{display:none}
+  .rows{display:block}
+  .row{padding:13px 14px}
+
+  /* 상세·등록창 */
+  .detail{width:100%; border-left:none}
+  .detail-body{padding:16px 16px 24px}
+  .kv dt{width:74px}
+  .fab{display:flex}
+}
+
+@media (max-width:380px){
+  .top-actions .btn.primary span{display:none}
+  .top-actions .btn.primary{width:32px; padding:0}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important; animation:none !important}
+}
+
+/* ---------- 인쇄 ---------- */
+@media print{
+  .topbar,.sidebar,.toolbar,.detail,.scrim,.modal,.toast,.notice,.chev,
+  .fab,.filebar,.draftbar,.xbtn,.addrow,.addbtn,.rowact{display:none !important}
+  .layout{display:block; padding:0; max-width:none}
+  .card{border:none; box-shadow:none}
+  table{min-width:0; font-size:11px}
+  thead th{position:static; background:none; border-bottom:1px solid #999}
+  tbody td{padding:6px 8px; border-bottom:1px solid #ddd}
+  .rows{display:none}
+  .tablewrap{display:block !important; overflow:visible}
+}
+
+/* ---------- 엑셀 파일 저장 상태 바 ---------- */
+.filebar{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  background:var(--surface); border:1px solid var(--separator); border-radius:var(--r-md);
+  box-shadow:var(--shadow-1); padding:11px 14px; margin-bottom:12px; font-size:13.5px;
+}
+.filebar svg{width:17px;height:17px; color:var(--label-3); flex:none}
+.filebar.linked svg{color:var(--green)}
+.filebar b{font-weight:600}
+.filebar .dim{color:var(--label-2)}
+.filebar .grow{flex:1; min-width:120px}
+.filebar .acts{display:flex; gap:6px; margin-left:auto}
+.filebar .btn{height:30px; font-size:13px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex:none}
+.dot.warn{background:var(--orange)}
+
+/* ---------- 임시저장 ---------- */
+.draftbar{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  background:var(--tint-wash); border:1px solid transparent; border-radius:var(--r-md);
+  padding:11px 14px; margin-bottom:12px; font-size:13.5px; color:var(--tint-press);
+}
+.draftbar svg{width:17px;height:17px; flex:none}
+.draftbar b{font-weight:600}
+.draftbar .acts{display:flex; gap:6px; margin-left:auto}
+.draftbar .btn{height:30px; font-size:13px; background:rgba(255,255,255,.7); color:var(--tint-press)}
+.draftbar .btn.primary{background:var(--tint); color:var(--on-tint)}
+.draftnote{
+  display:flex; align-items:center; gap:8px; margin-top:14px;
+  background:var(--tint-wash); color:var(--tint-press);
+  border-radius:10px; padding:9px 13px; font-size:13px;
+}
+.draftnote button{
+  margin-left:auto; border:none; background:none; color:var(--tint);
+  font-weight:600; cursor:pointer; font-size:13px; padding:0;
+}
+
+/* ---------- 좁은 화면 마무리 (뒤에 오는 규칙이라 우선합니다) ---------- */
+@media (max-width:720px){
+  .filebar{display:none}                 /* 휴대폰에서는 파일 직접 저장이 불가 */
+  .main, .sidebar{overflow-x:clip}       /* 옆으로 넘겨보는 줄이 페이지를 밀지 않도록 */
+  .filters > *{flex:none}
+  .chips{flex-wrap:nowrap; flex:none}
+  .chip{flex:none; white-space:nowrap}
+  .draftbar, .notice{flex-wrap:wrap; row-gap:8px}
+  .draftbar b{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:55vw}
+  .draftbar > span, .notice > span{min-width:0}
+  .draftbar .acts, .notice .btn{margin-left:auto}
+}
+
+/* ---------- 오늘 챙길 일 ---------- */
+.todo{background:var(--surface); border:1px solid var(--separator); border-radius:var(--r-lg); box-shadow:var(--shadow-1); margin-bottom:14px; overflow:hidden}
+.todo-head{display:flex; align-items:center; gap:8px; width:100%; border:none; background:none; cursor:pointer; padding:12px 16px; text-align:left; font-size:14.5px}
+.todo-head b{font-weight:600}
+.todo-head svg{color:var(--tint)}
+.todo-head .cnt{background:var(--red); color:#fff; border-radius:999px; font-size:12px; font-weight:600; padding:1px 8px}
+.todo-head .cnt.zero{background:var(--fill); color:var(--label-3)}
+.todo-head .chev-d{margin-left:auto; display:inline-flex; color:var(--label-3); transition:transform .2s var(--ease)}
+.todo.open .chev-d{transform:rotate(180deg)}
+.todo-list{border-top:1px solid var(--separator)}
+.todo-item{display:flex; align-items:center; gap:10px; width:100%; border:none; background:none; cursor:pointer; text-align:left; padding:10px 16px; border-bottom:1px solid var(--separator); font-size:14px}
+.todo-item:last-child{border-bottom:none}
+.todo-item:hover{background:var(--surface-2)}
+.todo-kind{flex:none; font-size:12px; font-weight:600; padding:2px 0; border-radius:6px; width:46px; text-align:center}
+.k-call{background:var(--tint-wash); color:var(--tint-press)}
+.k-money{background:var(--green-wash); color:var(--green)}
+.k-warn{background:var(--orange-wash); color:var(--orange)}
+.k-late{background:color-mix(in srgb, var(--red) 12%, transparent); color:var(--red)}
+.todo-text{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.todo-when{flex:none; font-size:12.5px; color:var(--label-3); font-variant-numeric:tabular-nums}
+.todo-when.late{color:var(--red); font-weight:600}
+.todo-empty{padding:12px 16px; color:var(--label-3); font-size:13.5px}
+
+/* ---------- 상세: 빠른 동작·맞춤·기록 ---------- */
+a.btn{text-decoration:none}
+.quickacts{display:flex; gap:8px; margin-top:14px}
+.quickacts .btn{flex:1; height:38px}
+.group-head{display:flex; align-items:center; gap:8px; padding:0 4px 7px}
+.group-head h4{padding:0}
+.group-head .btn{margin-left:auto; height:26px; font-size:12.5px; padding:0 10px}
+.match{display:flex; align-items:center; gap:10px; width:100%; border:none; background:none; cursor:pointer; text-align:left; padding:10px 14px; border-bottom:1px solid var(--separator); font-size:14px}
+.match:last-child{border-bottom:none}
+.match:hover{background:var(--fill)}
+.match .m-main{flex:1; min-width:0}
+.match .m-sub{display:block; color:var(--label-2); font-size:12.5px}
+.match .chev{width:16px; height:16px}
+.boxnote{padding:11px 14px; color:var(--label-3); font-size:13px}
+.nextrow{display:flex; align-items:center; gap:6px; flex-wrap:wrap; padding:10px 14px; border-bottom:1px solid var(--separator)}
+.nextrow .lbl{font-size:13px; color:var(--label-2); margin-right:2px}
+.nextrow .lbl b{color:var(--label); font-weight:600}
+.nextrow .lbl b.late{color:var(--red)}
+.nextrow .chip{height:28px; font-size:12.5px; padding:0 11px}
+.nextrow input{height:28px; border:1px solid var(--separator); border-radius:8px; padding:0 8px; background:var(--surface); font-size:13px}
+.logadd{display:flex; gap:6px; padding:10px 14px; border-bottom:1px solid var(--separator)}
+.logadd input{flex:1; min-width:0; height:34px; border:1px solid var(--separator); border-radius:9px; padding:0 10px; background:var(--surface)}
+.logadd input:focus{outline:none; border-color:var(--tint); box-shadow:0 0 0 3px var(--tint-wash)}
+.log{display:flex; gap:10px; padding:9px 14px; border-bottom:1px solid var(--separator); font-size:13.5px}
+.log:last-child{border-bottom:none}
+.log time{flex:none; color:var(--label-3); font-variant-numeric:tabular-nums; white-space:nowrap; font-size:12.5px; padding-top:1px}
+.log span{flex:1; white-space:pre-wrap; word-break:break-word}
+.log button{border:none; background:none; color:var(--label-3); cursor:pointer; padding:0 2px; font-size:13px}
+.log button:hover{color:var(--red)}
+.kv .mini{border:none; background:var(--tint); color:var(--on-tint); border-radius:999px; padding:2px 10px; font-size:12px; font-weight:600; cursor:pointer; margin-left:8px}
+.kv dd.late{color:var(--red); font-weight:600}
+.kv dd.good{color:var(--green); font-weight:600}
+.feehint{font-size:12px; color:var(--label-3); padding:7px 6px 0; line-height:1.45}
+.age{display:block; font-size:11.5px; color:var(--label-3); margin-top:2px}
+.age.old{color:var(--orange); font-weight:600}
+.mcount{display:inline-block; padding:2px 9px; border-radius:999px; background:var(--tint-wash); color:var(--tint-press); font-size:12.5px; font-weight:600; white-space:nowrap}
+.mcount.zero{background:var(--fill); color:var(--label-3); font-weight:500}
+.stat.is-red dd{color:var(--red)}
+.stat.is-blue dd{color:var(--tint)}
+@media (max-width:720px){
+  .todo{border-radius:14px; margin-bottom:10px}
+  .todo-head{padding:11px 14px}
+  .todo-item{padding:10px 14px}
+  .quickacts .btn{height:42px}
+}
+@media print{ .todo{display:none !important} }
+
+/* ---------- 구글 계정 · 동기화 ---------- */
+.acct{display:flex; align-items:center; gap:6px}
+.syncpill{display:inline-flex; align-items:center; gap:6px; height:30px; padding:0 11px; border-radius:999px; background:var(--fill); font-size:12.5px; color:var(--label-2); white-space:nowrap}
+.syncpill .sd{width:7px; height:7px; border-radius:50%; background:var(--green); flex:none}
+.syncpill.s-saving .sd{background:var(--tint); animation:pulse 1s infinite}
+.syncpill.s-loading .sd, .syncpill.s-offline .sd{background:var(--orange)}
+.syncpill.s-loading .sd{animation:pulse 1s infinite}
+.syncpill.s-error{color:var(--red)}
+.syncpill.s-error .sd{background:var(--red)}
+@keyframes pulse{50%{opacity:.25}}
+.avatar{width:32px; height:32px; border-radius:50%; border:none; padding:0; cursor:pointer; background:var(--tint); color:#fff; font-weight:600; font-size:14px; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; flex:none}
+.avatar img{width:100%; height:100%; object-fit:cover}
+.btn.gbtn{background:var(--surface); border:1px solid var(--separator-firm)}
+.btn.gbtn:hover{background:var(--surface-2)}
+svg.g{width:16px; height:16px; stroke:none}
+.acctmenu{position:fixed; top:58px; right:16px; z-index:70; width:min(290px, calc(100vw - 32px)); background:var(--surface); border:1px solid var(--separator); border-radius:var(--r-lg); box-shadow:var(--shadow-3); padding:14px}
+.acctmenu .who{display:flex; gap:10px; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--separator)}
+.acctmenu .who .avatar{width:40px; height:40px; cursor:default; color:#fff; font-size:16px}
+.acctmenu .who b{display:block; font-size:14.5px; font-weight:600}
+.acctmenu .who span{font-size:12.5px; color:var(--label-2); word-break:break-all}
+.acctmenu p{font-size:12.5px; color:var(--label-2); padding:10px 2px 12px; line-height:1.55}
+.acctmenu .btn{width:100%}
+.loginbar{display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:var(--tint-wash); border-radius:var(--r-md); padding:11px 14px; margin-bottom:12px; font-size:13.5px; color:var(--tint-press)}
+.loginbar svg{width:17px; height:17px; flex:none}
+.loginbar b{font-weight:600}
+.loginbar .acts{display:flex; gap:6px; margin-left:auto}
+.loginbar .btn{height:30px; font-size:13px}
+.loginbar .btn.later{background:rgba(255,255,255,.7); color:var(--tint-press)}
+@media (max-width:720px){
+  .syncpill{padding:0 9px; height:32px}
+  .syncpill .t{display:none}
+  .loginbar{padding:9px 12px; font-size:12.5px; margin-bottom:10px}
+  .loginbar .acts{margin-left:auto}
+  .acctmenu{top:auto; bottom:calc(16px + env(safe-area-inset-bottom)); right:16px}
+}
+@media print{ .acct,.acctmenu,.loginbar{display:none !important} }
+
+</style>
+</head>
+<body>
+
+<!-- ───────── 상단 바 ───────── -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.6 12 3.5l9 7.1V20a1 1 0 0 1-1 1h-5.2v-6.1H9.2V21H4a1 1 0 0 1-1-1z"/></svg>
+      <span class="brand-text"><b>신흥 부동산</b><i>매물 장부</i></span>
+    </div>
+
+    <div class="seg" role="tablist" aria-label="장부 선택">
+      <span class="seg-thumb" aria-hidden="true"></span>
+      <button class="seg-btn" role="tab" id="tabL" aria-selected="true">매물</button>
+      <button class="seg-btn" role="tab" id="tabC" aria-selected="false">손님</button>
+    </div>
+
+    <div class="top-actions">
+      <span class="saved" id="savedTag" aria-live="polite"></span>
+      <span class="acct" id="acct"></span>
+      <button class="btn" id="btnImport">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5V4m0 11.5-3.6-3.6M12 15.5l3.6-3.6M4.5 16v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>
+        <span>엑셀 열기</span>
+      </button>
+      <button class="btn" id="btnExport">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11.5m0-11.5L8.4 7.6M12 4l3.6 3.6M4.5 16v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>
+        <span id="saveLabel">엑셀 저장</span>
+      </button>
+      <button class="btn primary" id="btnAdd">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13"/></svg>
+        <span id="addLabel">매물 등록</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ───────── 사이드바 ───────── -->
+  <aside class="sidebar">
+    <h2 class="side-title" id="railTitle">매물 종류</h2>
+    <nav class="side-list" id="rail" aria-label="종류 필터"></nav>
+
+    <h2 class="side-title spaced">한눈에</h2>
+    <dl class="stats" id="stats"></dl>
+  </aside>
+
+  <!-- ───────── 목록 ───────── -->
+  <main class="main">
+    <div id="loginBar"></div>
+    <div id="todoBox"></div>
+    <div id="fileBar"></div>
+    <div id="draftBar"></div>
+    <div id="demoNote"></div>
+
+    <div class="toolbar">
+      <div class="searchwrap">
+        <svg class="search-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.2"/><path d="m15.6 15.6 4 4"/></svg>
+        <input class="search" id="q" type="search" placeholder="지역·건물명·의뢰인·메모 검색" autocomplete="off">
+        <kbd class="kbd" id="kbdHint">⌘K</kbd>
+      </div>
+      <div class="filters">
+        <div class="chips" id="dealChips"></div>
+        <span class="chip-div" aria-hidden="true"></span>
+        <div class="chips" id="statusChips"></div>
+        <button class="btn quiet hidden" id="btnReset">필터 해제</button>
+        <label class="sortwrap">
+          <span class="sr-only">정렬</span>
+          <select id="sort">
+            <option value="date">최근 등록순</option>
+            <option value="price-desc">금액 높은순</option>
+            <option value="price-asc">금액 낮은순</option>
+            <option value="area">지역명순</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <p class="resultline" id="resultLine"></p>
+    <section class="card" id="listCard"></section>
+  </main>
+</div>
+
+<!-- ───────── 상세 패널 ───────── -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="detail closed" id="detail" aria-hidden="true" aria-label="상세 정보">
+  <div class="detail-head">
+    <button class="btn icon-btn quiet" id="dClose" aria-label="닫기">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6.5 6.5 11 11m0-11-11 11"/></svg>
+    </button>
+    <div class="detail-title">
+      <h3 id="dTitle">—</h3>
+      <p id="dSub"></p>
+    </div>
+  </div>
+  <div class="detail-body" id="dBody"></div>
+  <div class="detail-foot">
+    <button class="btn" id="dDup">복제</button>
+    <button class="btn" id="dEdit">수정</button>
+    <button class="btn destructive" id="dDel">삭제</button>
+  </div>
+</aside>
+
+<!-- ───────── 등록·수정 시트 ───────── -->
+<div class="modal" id="modal" hidden>
+  <form class="sheet" id="form" novalidate>
+    <div class="sheet-head">
+      <button type="button" class="btn quiet" id="fCancel">취소</button>
+      <h3 id="fTitle">매물 등록</h3>
+      <div class="sheet-head-right">
+        <button type="button" class="btn" id="fDraft">임시저장</button>
+        <button type="submit" class="btn primary">저장</button>
+      </div>
+    </div>
+    <div class="sheet-body" id="fBody"></div>
+  </form>
+</div>
+
+<button class="fab" id="fab" aria-label="새로 등록">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13"/></svg>
+</button>
+
+<input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden>
+
+<div class="acctmenu" id="acctMenu" hidden></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span id="toastMsg"></span>
+  <button class="toast-action hidden" id="toastAction">실행취소</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+/* ==========================================================================
+   구글 로그인 설정 — 여기만 채우면 로그인·동기화가 켜집니다.
+   Firebase 콘솔(console.firebase.google.com) → 프로젝트 설정 → 내 앱(웹)에 있는
+   firebaseConfig 값을 그대로 붙여넣으세요. 비워 두면 예전처럼 이 기기에만 저장됩니다.
+   ========================================================================== */
+window.FIREBASE_CONFIG = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+</script>
+<script>
+/* ==========================================================================
+   신흥 부동산 매물 장부 — data.js
+   처음 열었을 때 보여줄 예시 자료입니다.
+   실제 사무실 자료는 화면에서 직접 등록하거나 엑셀로 불러오면 되고,
+   예시를 아예 없애고 빈 장부로 시작하려면 아래 두 배열을 [] 로 비우세요.
+
+   ─ 금액은 모두 '만원' 단위 숫자입니다. (1억 1,000만원 → 11000)
+   ─ 날짜는 2026-09-20 형식으로 적습니다.
+     (예시는 열 때마다 '오늘'에 맞춰 보이도록 seedDay(며칠 뒤)로 적었습니다.)
+   ─ type   : 원룸 · 투룸 · 쓰리룸 · 주택 · 아파트 · 상가 · 토지
+   ─ deal   : 매매 · 전세 · 월세
+   ─ status : 매물 = 광고중 · 보류 · 계약완료 / 손님 = 찾는중 · 보류 · 계약완료
+   ─ next   : 다음에 연락할 날 (그날이 되면 '오늘 챙길 일'에 뜹니다)
+   ─ cdate·bdate·comm·paid : 계약일 · 잔금일 · 받을 중개보수(만원) · 받음/미수
+   ─ log    : 연락·상담 기록 [{ d:"날짜", t:"내용" }]
+   ========================================================================== */
+
+function seedDay(n) {
+  const d = new Date(); d.setDate(d.getDate() + n);
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
+
+window.SEED = {
+
+  /* ── 내놓은 매물 ── */
+  listings: [
+    { code:"26-001", type:"원룸",   deal:"월세", status:"광고중",
+      sale:0, deposit:500,  rent:35, fee:5,
+      area:"합성동", building:"시외버스터미널 뒤 명성원룸 302호",
+      m2:23.1, floor:3, floors:5, rooms:1, baths:1,
+      parking:"가능", elev:"없음", dir:"남향", built:2016, movein:seedDay(10),
+      oname:"김정호", ophone:"010-2233-4411", created:seedDay(-12),
+      next:seedDay(0),
+      log:[{ d:seedDay(-6), t:"사진 새로 찍어 광고 올림. 문의 2건." }],
+      memo:"풀옵션. 터미널 도보 3분. 세탁기·에어컨 포함." },
+
+    { code:"26-002", type:"투룸",   deal:"전세", status:"광고중",
+      sale:0, deposit:9500, rent:0, fee:7,
+      area:"양덕동", building:"한마음빌라 203호",
+      m2:44.6, floor:2, floors:4, rooms:2, baths:1,
+      parking:"가능", elev:"없음", dir:"남동향", built:2011, movein:seedDay(25),
+      oname:"박수민", ophone:"010-8842-1170", created:seedDay(-15),
+      memo:"양덕초 도보권. 즉시 입주 협의 가능." },
+
+    { code:"26-003", type:"아파트", deal:"매매", status:"보류",
+      sale:38500, deposit:0, rent:0, fee:16,
+      area:"양덕동", building:"양덕 센트럴파크 108동 902호",
+      m2:84.9, floor:9, floors:25, rooms:3, baths:2,
+      parking:"가능", elev:"있음", dir:"남향", built:2015, movein:seedDay(60),
+      oname:"이경란", ophone:"010-3391-7726", created:seedDay(-28),
+      next:seedDay(-2),
+      log:[{ d:seedDay(-9), t:"매도인: 3억 8천까지는 조정 가능하다고 함." }],
+      memo:"매도인 가격 재조정 중." },
+
+    { code:"26-004", type:"쓰리룸", deal:"월세", status:"광고중",
+      sale:0, deposit:3000, rent:70, fee:9,
+      area:"석전동", building:"석전 대성타운 401호",
+      m2:66.1, floor:4, floors:5, rooms:3, baths:2,
+      parking:"가능", elev:"없음", dir:"동향", built:2005, movein:seedDay(5),
+      oname:"최동일", ophone:"010-5520-3348", created:seedDay(-9),
+      memo:"신혼부부 문의 다수. 도배 새로 함." },
+
+    { code:"26-005", type:"상가",   deal:"월세", status:"광고중",
+      sale:0, deposit:5000, rent:250, fee:22,
+      area:"합성동", building:"터미널 사거리 1층 코너",
+      m2:59.5, floor:1, floors:7, rooms:0, baths:1,
+      parking:"불가", elev:"있음", dir:"북향", built:2003, movein:seedDay(3),
+      oname:"정미영", ophone:"010-7714-2205", created:seedDay(-3),
+      memo:"권리금 2,000. 카페·약국 문의 많음. 유동인구 우수." },
+
+    { code:"26-006", type:"주택",   deal:"매매", status:"계약완료",
+      sale:21500, deposit:0, rent:0, fee:0,
+      area:"회원동", building:"회원동 단독주택 (대지 198㎡)",
+      m2:112.4, floor:1, floors:2, rooms:4, baths:2,
+      parking:"가능", elev:"없음", dir:"남향", built:1996, movein:seedDay(5),
+      oname:"강복순", ophone:"010-4406-9931", created:seedDay(-40),
+      cdate:seedDay(-3), bdate:seedDay(5), comm:172, paid:"미수",
+      log:[{ d:seedDay(-3), t:"계약 체결. 매수인 측 보수는 잔금 때 같이 받기로." }],
+      memo:"" },
+
+    { code:"26-007", type:"토지",   deal:"매매", status:"광고중",
+      sale:24000, deposit:0, rent:0, fee:0,
+      area:"내서읍 중리", building:"중리 계획관리지역 660㎡",
+      m2:660, floor:0, floors:0, rooms:0, baths:0,
+      parking:"가능", elev:"없음", dir:"남향", built:0, movein:"",
+      oname:"윤태석", ophone:"010-9908-1123", created:seedDay(-64),
+      memo:"도로 접함(4m). 전원주택 부지 문의 위주. 평당 120." }
+  ],
+
+  /* ── 구하는 손님 ── */
+  clients: [
+    { name:"한지훈", phone:"010-2201-8834", status:"찾는중",
+      wants:["원룸","투룸"], deal:"월세",
+      bmin:0, bmax:1000, rmax:45,
+      area:"합성동·양덕동", size:"방 1개, 주차 필수", movein:seedDay(12), created:seedDay(-8),
+      memo:"터미널 인근 직장. 보증금 1,000 이하 / 월 45 이하." },
+
+    { name:"오세라", phone:"010-6647-2290", status:"찾는중",
+      wants:["아파트"], deal:"매매",
+      bmin:32000, bmax:40000, rmax:0,
+      area:"양덕동·합성동", size:"84㎡ 이상 남향", movein:seedDay(58), created:seedDay(-20),
+      memo:"초등 자녀 2명, 학군 우선." },
+
+    { name:"배준영", phone:"010-3312-7708", status:"찾는중",
+      wants:["상가"], deal:"월세",
+      bmin:0, bmax:6000, rmax:270,
+      area:"합성동·석전동", size:"1층 코너 30평대", movein:seedDay(30), created:seedDay(-2),
+      next:seedDay(1),
+      memo:"프랜차이즈 커피 창업. 권리금 협의 가능." },
+
+    { name:"서미란", phone:"010-8830-4417", status:"보류",
+      wants:["투룸","쓰리룸"], deal:"전세",
+      bmin:7000, bmax:11000, rmax:0,
+      area:"양덕동·회원동", size:"방 2~3개", movein:seedDay(40), created:seedDay(-25),
+      next:seedDay(-1),
+      log:[{ d:seedDay(-7), t:"전세대출 심사 들어감. 결과 나오면 연락 주기로." }],
+      memo:"전세대출 심사 대기." }
+  ]
+};
+
+</script>
+<script>
+/* ==========================================================================
+   신흥 부동산 매물 장부 — app.js
+   화면을 그리고, 입력을 받고, 엑셀을 주고받는 부분입니다.
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  /* ── 분류 ───────────────────────────────────────────────────────────── */
+  const TYPES   = ["원룸", "투룸", "쓰리룸", "주택", "아파트", "상가", "토지"];
+  const DEALS   = ["매매", "전세", "월세"];
+  const L_STATUS = ["광고중", "보류", "계약완료"];
+  const C_STATUS = ["찾는중", "보류", "계약완료"];
+  const STORE   = "sinheung-ledger-v1";   // 브라우저 저장 이름
+
+  /* 사이드바 아이콘 (SF 계열 라인 아이콘) */
+  const ICON = {
+    "전체":   '<path d="M4 6h16M4 12h16M4 18h16"/>',
+    "원룸":   '<rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 20v-5h6v5"/>',
+    "투룸":   '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M12 5v14"/>',
+    "쓰리룸": '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M9 5v14M15 5v14"/>',
+    "주택":   '<path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',
+    "아파트": '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h2M14 15h2"/>',
+    "상가":   '<path d="M4 9h16v11H4z"/><path d="M3 9 5 4h14l2 5"/><path d="M10 20v-5h4v5"/>',
+    "토지":   '<path d="M3 17.5 12 6l9 11.5"/><path d="M3 17.5h18"/>'
+  };
+  const svg = (d, cls) => '<svg class="' + (cls || "") + '" viewBox="0 0 24 24" aria-hidden="true">' + d + "</svg>";
+
+  /* ── 상태 ───────────────────────────────────────────────────────────── */
+  const S = {
+    tab: "listings",
+    type: "전체",
+    deals: [],
+    status: [],
+    q: "",
+    sort: "date",
+    sel: null,
+    editing: null,
+    listings: [],
+    clients: [],
+    demo: true
+  };
+  let undo = null;   // 삭제 되돌리기용
+
+  /* ── 짧은 도우미 ────────────────────────────────────────────────────── */
+  const $  = (id) => document.getElementById(id);
+  const uid = () => Math.random().toString(36).slice(2, 10);
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const num = (v) => { const x = parseFloat(String(v).replace(/,/g, "")); return isFinite(x) ? x : 0; };
+  const isL = () => S.tab === "listings";
+  const list = () => (isL() ? S.listings : S.clients);
+
+  /** 만원 단위 숫자를 사람이 읽는 말로. 25000 → "2억 5,000" */
+  function man(v) {
+    v = Math.round(num(v));
+    if (!v) return "0";
+    if (v >= 10000) {
+      const eok = Math.floor(v / 10000), rest = v % 10000;
+      return eok + "억" + (rest ? " " + rest.toLocaleString("ko-KR") : "");
+    }
+    return v.toLocaleString("ko-KR");
+  }
+  const pyeong = (m2) => (num(m2) ? (num(m2) / 3.3058).toFixed(1) : "0");
+
+  /** 끝 글자에 받침이 있으면 '으로', 없으면 '로' (받침 ㄹ 도 '로') */
+  function euro(word) {
+    const c = String(word || "").charCodeAt(String(word).length - 1) - 0xac00;
+    if (c < 0 || c > 11171) return "으로";
+    const jong = c % 28;
+    return (jong === 0 || jong === 8) ? "로" : "으로";
+  }
+
+  function priceText(l) {
+    if (l.deal === "매매") return man(l.sale);
+    if (l.deal === "전세") return man(l.deposit);
+    return man(l.deposit) + " / " + man(l.rent);
+  }
+  function priceValue(l) {                         // 정렬 기준 (만원 환산)
+    if (l.deal === "매매") return num(l.sale);
+    if (l.deal === "전세") return num(l.deposit);
+    return num(l.deposit) + num(l.rent) * 100;
+  }
+  function budgetText(c) {
+    if (c.deal === "월세") return man(c.bmax) + " / " + man(c.rmax) + " 이하";
+    if (!num(c.bmin)) return man(c.bmax) + " 이하";
+    return man(c.bmin) + "~" + man(c.bmax);
+  }
+  const badgeClass = (s) => (s === "계약완료" ? "b-done" : s === "보류" ? "b-hold" : "b-go");
+  function today() {
+    const d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function nextCode() {
+    const yy = String(new Date().getFullYear()).slice(2);
+    let max = 0;
+    S.listings.forEach((l) => {
+      const m = /^(\d{2})-(\d+)$/.exec(l.code || "");
+      if (m && m[1] === yy) max = Math.max(max, +m[2]);
+    });
+    return yy + "-" + String(max + 1).padStart(3, "0");
+  }
+
+  /* ── 날짜 계산 ──────────────────────────────────────────────────────── */
+  function addDays(n) {
+    const d = new Date(); d.setDate(d.getDate() + n);
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  /** 오늘부터 그 날짜까지 며칠 (지난 날이면 음수) */
+  function dday(s) {
+    if (!s || !/^\d{4}-\d{2}-\d{2}/.test(s)) return null;
+    const a = new Date(String(s).slice(0, 10) + "T00:00:00"), b = new Date(today() + "T00:00:00");
+    return Math.round((a - b) / 86400000);
+  }
+  function ddayText(n) {
+    if (n == null) return "";
+    if (n === 0) return "오늘";
+    if (n === 1) return "내일";
+    if (n < 0) return (-n) + "일 지남";
+    return n + "일 뒤";
+  }
+  const shortDate = (s) => { const m = /^\d{4}-(\d{2})-(\d{2})/.exec(s || ""); return m ? (+m[1]) + "/" + (+m[2]) : (s || ""); };
+  const lname = (l) => ((l.area || "") + " " + (l.type || "")).trim();
+
+  /* ── 법정 중개보수 상한 (참고용, 한쪽 기준) ───────────────────────────
+     주택(원룸~아파트)은 공인중개사법 시행규칙 요율표, 상가·토지는 0.9% 이내 협의.
+     시·도 조례와 오피스텔 요율은 따로 확인해 주세요. 금액은 만원 단위. */
+  const HOUSING = ["원룸", "투룸", "쓰리룸", "주택", "아파트"];
+  function legalFee(l) {
+    const housing = HOUSING.indexOf(l.type) >= 0;
+    let p, rate, cap = 0;
+    if (l.deal === "매매") {
+      p = num(l.sale); if (!p) return null;
+      if (!housing) rate = 0.009;
+      else if (p < 5000)   { rate = 0.006; cap = 25; }
+      else if (p < 20000)  { rate = 0.005; cap = 80; }
+      else if (p < 90000)  rate = 0.004;
+      else if (p < 120000) rate = 0.005;
+      else if (p < 150000) rate = 0.006;
+      else rate = 0.007;
+    } else {
+      p = num(l.deposit) + (l.deal === "월세" ? num(l.rent) * 100 : 0);
+      if (l.deal === "월세" && p < 5000) p = num(l.deposit) + num(l.rent) * 70;
+      if (!p) return null;
+      if (!housing) rate = 0.009;
+      else if (p < 5000)   { rate = 0.005; cap = 20; }
+      else if (p < 10000)  { rate = 0.004; cap = 30; }
+      else if (p < 60000)  rate = 0.003;
+      else if (p < 120000) rate = 0.004;
+      else if (p < 150000) rate = 0.005;
+      else rate = 0.006;
+    }
+    let amt = p * rate; if (cap) amt = Math.min(amt, cap);
+    return { amt: Math.round(amt * 10) / 10, base: p, rate: rate, cap: cap, housing: housing };
+  }
+  const manDec = (v) => (Math.round(num(v) * 10) / 10).toLocaleString("ko-KR");
+  function feeNote(f, l) {
+    if (!f) return "";
+    return "거래금액 " + man(f.base) + "만원 × " + (f.rate * 100).toFixed(1) + "%" +
+      (f.cap ? " (한도 " + f.cap + "만원)" : "") +
+      (f.housing ? "" : " · 주택 외는 0.9% 이내 협의") +
+      " — 참고용 상한, 매도·매수 각각. 조례는 따로 확인";
+  }
+
+  /* ── 손님 ↔ 매물 맞춰보기 ──────────────────────────────────────────── */
+  const areaTokens = (s) => String(s || "").split(/[·,\/\s]+/).map((x) => x.trim()).filter((x) => x.length >= 2);
+  function isMatch(l, c) {
+    if (l.status === "계약완료" || c.status === "계약완료") return false;
+    if ((c.wants || []).length && c.wants.indexOf(l.type) < 0) return false;
+    if (c.deal && c.deal !== "무관" && c.deal !== l.deal) return false;
+    const main = l.deal === "매매" ? num(l.sale) : num(l.deposit);
+    if (num(c.bmax) && main > num(c.bmax) * 1.05) return false;              // 예산 5%까지는 봐 줍니다
+    if (l.deal === "월세" && num(c.rmax) && num(l.rent) > num(c.rmax) * 1.05) return false;
+    if (num(c.bmin) && main < num(c.bmin) * 0.7) return false;
+    const toks = areaTokens(c.area);
+    if (toks.length) {
+      const hay = (l.area || "") + " " + (l.building || "");
+      if (!toks.some((t) => hay.indexOf(t) >= 0)) return false;
+    }
+    return true;
+  }
+  const matchListings = (c) => S.listings.filter((l) => isMatch(l, c))
+    .sort((a, b) => (a.status === "광고중" ? 0 : 1) - (b.status === "광고중" ? 0 : 1));
+  const matchClients  = (l) => S.clients.filter((c) => isMatch(l, c));
+
+  /* ── 손님에게 보낼 소개글 ──────────────────────────────────────────── */
+  function introText(l) {
+    const lines = [];
+    lines.push(lname(l) + " · " + l.deal + " " + priceText(l) + "만원" + (num(l.fee) ? " (관리비 " + man(l.fee) + ")" : ""));
+    const a = [];
+    if (num(l.m2)) a.push(num(l.m2) + "㎡(" + pyeong(l.m2) + "평)");
+    if (num(l.floors)) a.push(num(l.floor) + "층/" + num(l.floors) + "층");
+    if (num(l.rooms) || num(l.baths)) a.push("방" + num(l.rooms) + " 욕실" + num(l.baths));
+    if (a.length) lines.push(a.join(" · "));
+    if (l.type !== "토지") {
+      const b = [];
+      if (l.parking) b.push("주차 " + l.parking);
+      if (l.elev) b.push("엘리베이터 " + l.elev);
+      if (l.dir && l.dir !== "-") b.push(l.dir);
+      if (num(l.built)) b.push(num(l.built) + "년 준공");
+      if (b.length) lines.push(b.join(" · "));
+    }
+    if (l.movein) lines.push("입주 가능 " + l.movein);
+    return lines.join("\n");
+  }
+
+  function copyText(t, msg) {
+    const done = () => toast(msg || "복사했습니다");
+    const fallback = () => {
+      const ta = document.createElement("textarea");
+      ta.value = t; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); done(); } catch (e) { toast("복사하지 못했습니다"); }
+      ta.remove();
+    };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(done, fallback);
+    else fallback();
+  }
+
+  /** 예전 자료에도 새 칸이 있도록 맞춰 둡니다 */
+  function normalize() {
+    S.listings.forEach((r) => { if (!Array.isArray(r.log)) r.log = []; });
+    S.clients.forEach((r) => { if (!Array.isArray(r.log)) r.log = []; if (!Array.isArray(r.wants)) r.wants = []; });
+  }
+
+  /* ── 저장 · 불러오기 (브라우저) ─────────────────────────────────────── */
+  let saveTimer;
+  function save() {
+    if (user) { pushCloud(); markDirty(); return; }      // 로그인 중: 구글 계정에 바로 저장
+    try {
+      localStorage.setItem(STORE, JSON.stringify({ listings: S.listings, clients: S.clients, demo: S.demo }));
+      const tag = $("savedTag");
+      tag.textContent = "저장됨";
+      tag.classList.add("on");
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => tag.classList.remove("on"), 1800);
+    } catch (e) { /* 저장이 막힌 환경에서도 화면은 그대로 동작합니다 */ }
+    markDirty();
+  }
+  function restore() {
+    try {
+      const raw = localStorage.getItem(STORE);
+      if (!raw) return false;
+      const d = JSON.parse(raw);
+      if (!d || !Array.isArray(d.listings)) return false;
+      S.listings = d.listings; S.clients = d.clients || []; S.demo = !!d.demo;
+      return true;
+    } catch (e) { return false; }
+  }
+  function loadSeed() {
+    const seed = window.SEED || { listings: [], clients: [] };
+    S.listings = (seed.listings || []).map((o) => Object.assign({ id: uid() }, o));
+    S.clients  = (seed.clients  || []).map((o) => Object.assign({ id: uid() }, o));
+    S.demo = S.listings.length + S.clients.length > 0;
+  }
+
+  /* ── 엑셀 파일에 바로 저장하기 ───────────────────────────────────────
+     크롬·엣지에서는 파일 하나를 정해두면, 매물을 고칠 때마다 그 xlsx 파일에
+     바로 덮어써 줍니다. 지원하지 않는 브라우저(사파리·파이어폭스)에서는
+     예전처럼 [엑셀 저장]으로 내려받는 방식으로 자동으로 넘어갑니다. */
+  // 아이프레임 안(클로드 아티팩트 등)에서는 파일 직접 저장이 막혀 있어 내려받기로 넘깁니다.
+  const FSA = (typeof window.showSaveFilePicker === "function") && (window.self === window.top);
+  const XTYPE = [{
+    description: "Excel 통합 문서",
+    accept: { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"] }
+  }];
+  let fileHandle = null;     // 연결된 엑셀 파일
+  let autoOn = true;         // 자동 저장 켜짐 여부
+  let dirty = false;         // 저장 안 된 변경이 있는지
+  let lastSaved = null;      // 마지막으로 파일에 쓴 시각
+  let autoTimer = null;
+
+  /* 파일 연결 정보를 다음에도 기억하도록 IndexedDB에 담아 둡니다 */
+  function idb() {
+    return new Promise((res, rej) => {
+      const r = indexedDB.open("sinheung-file", 1);
+      r.onupgradeneeded = () => r.result.createObjectStore("kv");
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => rej(r.error);
+    });
+  }
+  async function idbPut(v) {
+    try { const d = await idb(); d.transaction("kv", "readwrite").objectStore("kv").put(v, "file"); } catch (e) {}
+  }
+  async function idbGet() {
+    try {
+      const d = await idb();
+      return await new Promise((res) => {
+        const q = d.transaction("kv").objectStore("kv").get("file");
+        q.onsuccess = () => res(q.result || null);
+        q.onerror = () => res(null);
+      });
+    } catch (e) { return null; }
+  }
+  async function idbClear() {
+    try { const d = await idb(); d.transaction("kv", "readwrite").objectStore("kv").delete("file"); } catch (e) {}
+  }
+
+  async function allowed(h, write) {
+    const opt = { mode: write ? "readwrite" : "read" };
+    try {
+      if ((await h.queryPermission(opt)) === "granted") return true;
+      return (await h.requestPermission(opt)) === "granted";
+    } catch (e) { return false; }
+  }
+
+  /** 새 엑셀 파일을 만들어 연결합니다. */
+  async function linkNew() {
+    try {
+      const h = await window.showSaveFilePicker({ suggestedName: defaultName(), types: XTYPE });
+      fileHandle = h; await idbPut(h);
+      await writeFile(true);
+      toast(h.name + " 파일에 자동 저장을 시작합니다");
+    } catch (e) { if (e && e.name !== "AbortError") toast("파일을 만들지 못했습니다"); }
+    renderFileBar();
+  }
+
+  /** 이미 있는 엑셀 파일을 열어서 불러오고, 그 파일에 연결합니다. */
+  async function linkOpen() {
+    try {
+      const [h] = await window.showOpenFilePicker({ types: XTYPE, multiple: false });
+      const ok = await importBlob(await h.getFile());
+      if (!ok) return;
+      fileHandle = h; await idbPut(h);
+      dirty = false; lastSaved = new Date();
+    } catch (e) { if (e && e.name !== "AbortError") toast("파일을 열지 못했습니다"); }
+    renderFileBar();
+  }
+
+  /** 연결된 파일에 지금 내용을 덮어씁니다. */
+  async function writeFile(silent) {
+    if (!fileHandle || typeof XLSX === "undefined") return false;
+    if (!(await allowed(fileHandle, true))) { toast("파일에 저장할 권한이 필요합니다"); renderFileBar(); return false; }
+    try {
+      const w = await fileHandle.createWritable();
+      await w.write(workbookBlob());
+      await w.close();
+      dirty = false; lastSaved = new Date(); renderFileBar();
+      if (!silent) toast("엑셀 파일에 저장했습니다");
+      return true;
+    } catch (e) {
+      toast("파일에 저장하지 못했습니다. 엑셀에서 그 파일을 열어두셨다면 닫아 주세요");
+      renderFileBar();
+      return false;
+    }
+  }
+
+  /** 이전에 쓰던 파일에 다시 연결합니다 (권한 확인 때문에 클릭이 필요합니다). */
+  async function relink() {
+    const h = await idbGet();
+    if (!h) return;
+    if (!(await allowed(h, true))) { toast("파일 사용을 허용해 주세요"); return; }
+    fileHandle = h; dirty = true;
+    await writeFile(true);
+    toast(h.name + " 파일에 다시 연결했습니다");
+  }
+
+  async function unlink() {
+    fileHandle = null; await idbClear(); renderFileBar();
+    toast("파일 연결을 해제했습니다");
+  }
+
+  function markDirty() {
+    dirty = true;
+    if (fileHandle && autoOn) {
+      clearTimeout(autoTimer);
+      autoTimer = setTimeout(() => writeFile(true), 1200);
+    }
+    renderFileBar();
+  }
+
+  const clock = (d) => d ? d.toLocaleTimeString("ko-KR", { hour: "numeric", minute: "2-digit" }) : "";
+
+  /** 화면 위쪽 파일 상태 줄 */
+  let pendingHandleName = null;
+  function renderFileBar() {
+    const bar = $("fileBar");
+    const fileIco = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg>';
+    let html = "";
+
+    if (fileHandle) {
+      const state = dirty
+        ? '<span class="dot warn"></span><span class="dim">저장 중…</span>'
+        : '<span class="dot"></span><span class="dim">저장됨' + (lastSaved ? " · " + clock(lastSaved) : "") + "</span>";
+      html = '<div class="filebar linked">' + fileIco +
+        "<b>" + esc(fileHandle.name) + "</b>" +
+        '<span class="dim">·</span>' + state +
+        '<span class="grow"></span><span class="acts">' +
+          '<button class="btn" id="fbToggle">' + (autoOn ? "자동 저장 끄기" : "자동 저장 켜기") + "</button>" +
+          '<button class="btn" id="fbSave">지금 저장</button>' +
+          '<button class="btn quiet" id="fbUnlink">연결 해제</button>' +
+        "</span></div>";
+    } else if (FSA && pendingHandleName) {
+      html = '<div class="filebar">' + fileIco +
+        '<b>' + esc(pendingHandleName) + '</b><span class="dim">에 이어서 작업할까요? 한 번만 허용해 주시면 됩니다.</span>' +
+        '<span class="grow"></span><span class="acts">' +
+          '<button class="btn primary" id="fbRelink">다시 연결</button>' +
+          '<button class="btn quiet" id="fbForget">아니요</button>' +
+        "</span></div>";
+    } else if (FSA) {
+      html = '<div class="filebar">' + fileIco +
+        '<span class="dim"><b>엑셀 파일에 자동 저장</b> — 파일을 하나 정해두면 입력할 때마다 그 파일에 바로 저장됩니다.</span>' +
+        '<span class="grow"></span><span class="acts">' +
+          '<button class="btn primary" id="fbNew">새 엑셀 파일 만들기</button>' +
+          '<button class="btn" id="fbOpen">쓰던 파일 열기</button>' +
+        "</span></div>";
+    } else {
+      html = "";   // 지원하지 않는 브라우저에서는 줄을 숨기고 기존 방식대로 씁니다
+    }
+    bar.innerHTML = html;
+
+    const on = (id, fn) => { const el = $(id); if (el) el.onclick = fn; };
+    on("fbNew", linkNew);
+    on("fbOpen", linkOpen);
+    on("fbRelink", () => { pendingHandleName = null; relink(); });
+    on("fbForget", () => { pendingHandleName = null; idbClear(); renderFileBar(); });
+    on("fbSave", () => writeFile(false));
+    on("fbUnlink", unlink);
+    on("fbToggle", () => {
+      autoOn = !autoOn;
+      if (autoOn && dirty) writeFile(true); else renderFileBar();
+      toast(autoOn ? "자동 저장을 켰습니다" : "자동 저장을 껐습니다. [지금 저장]으로 직접 저장하세요");
+    });
+
+    const lab = $("saveLabel");
+    if (lab) lab.textContent = fileHandle ? "지금 저장" : (FSA ? "엑셀로 저장" : "엑셀 저장");
+  }
+
+  /** [엑셀 저장] 버튼 — 연결된 파일이 있으면 거기에, 없으면 새 파일로 */
+  async function saveToExcel() {
+    if (typeof XLSX === "undefined") { toast("엑셀 기능을 불러오지 못했습니다. 인터넷 연결을 확인해 주세요"); return; }
+    if (fileHandle) return writeFile(false);
+    if (FSA) return linkNew();
+    return downloadXlsx();
+  }
+
+  /* ── 구글 로그인 · 클라우드 동기화 ──────────────────────────────────────
+     로그인하면 장부가 구글 계정(Firebase)에 저장됩니다.
+     ─ 한 건 고칠 때마다 그 건만 바로 올립니다 (자동 저장).
+     ─ 다른 기기에서 고친 내용은 몇 초 안에 이 화면에 들어옵니다.
+     ─ 인터넷이 끊겨도 계속 쓸 수 있고, 연결되면 알아서 올라갑니다.
+     저장 위치: users/{구글계정ID}/listings/{매물ID}, users/{구글계정ID}/clients/{손님ID} */
+  const CFG = window.FIREBASE_CONFIG || {};
+  const CLOUD_ON = !!(CFG.apiKey && CFG.projectId);
+  const FB_VER = "10.12.2";
+  const COLS = ["listings", "clients"];
+  const LAST_UID = "sinheung-last-uid";
+  const MERGED = "sinheung-merged-";
+  const LOGIN_LATER = "sinheung-login-later";
+
+  let auth = null, db = null, user = null;
+  let persistOK = false;
+  let cloudMap = { listings: {}, clients: {} };   // 클라우드에 있는 내용 (id → 서명)
+  let remote = { listings: [], clients: [] };
+  let gotSnap = { listings: false, clients: false };
+  let gotServer = { listings: false, clients: false };
+  let cloudInitDone = false;
+  let cloudLoading = false;
+  let localPre = null;          // 로그인 직전 이 기기에 있던 장부
+  let unsubs = [];
+  let syncState = "off";        // off · loading · saving · saved · offline · error
+  let lastSync = null;
+  let inflight = 0;
+
+  const lastUid = () => { try { return localStorage.getItem(LAST_UID); } catch (e) { return null; } };
+  const col = (name) => db.collection("users").doc(user.uid).collection(name);
+  const arrOf = (name) => (name === "listings" ? S.listings : S.clients);
+
+  /** 키 순서와 상관없이 같은 내용이면 같은 글자가 나오게 */
+  function stable(v) {
+    if (Array.isArray(v)) return "[" + v.map(stable).join(",") + "]";
+    if (v && typeof v === "object")
+      return "{" + Object.keys(v).sort().filter((k) => v[k] !== undefined && k !== "id")
+        .map((k) => JSON.stringify(k) + ":" + stable(v[k])).join(",") + "}";
+    return JSON.stringify(v === undefined ? null : v);
+  }
+  const sig = (r) => stable(r);
+  function cleanForCloud(r) {
+    const o = JSON.parse(JSON.stringify(r));
+    delete o.id;
+    return o;
+  }
+
+  function loadScript(src) {
+    return new Promise((res, rej) => {
+      const el = document.createElement("script");
+      el.src = src; el.onload = res; el.onerror = rej;
+      document.head.appendChild(el);
+    });
+  }
+
+  async function initCloud() {
+    renderAccount(); renderLoginBar();
+    if (!CLOUD_ON) return;
+    try {
+      const base = "https://www.gstatic.com/firebasejs/" + FB_VER + "/";
+      await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-auth-compat.js");
+      await loadScript(base + "firebase-firestore-compat.js");
+    } catch (e) {
+      cloudLoading = false; syncState = "error"; render();
+      toast("로그인 기능을 불러오지 못했습니다. 인터넷 연결을 확인해 주세요");
+      return;
+    }
+    firebase.initializeApp(CFG);
+    auth = firebase.auth();
+    db = firebase.firestore();
+    try { await db.enablePersistence({ synchronizeTabs: true }); persistOK = true; } catch (e) { persistOK = false; }
+    auth.getRedirectResult().catch(loginError);
+    auth.onAuthStateChanged((u) => { if (u) startSync(u); else stopSync(); });
+  }
+
+  const IN_APP = /KAKAOTALK|NAVER\(|Instagram|FBAN|FB_IAB|Line\/|DaumApps|everytimeApp/i.test(navigator.userAgent);
+
+  async function login() {
+    if (!CLOUD_ON) {
+      alert("구글 로그인이 아직 설정되지 않았습니다.\n\nindex.html 맨 위쪽의 FIREBASE_CONFIG 에 Firebase 설정값을 넣으면 켜집니다.");
+      return;
+    }
+    if (location.protocol === "file:") {
+      alert("파일을 바로 연 상태에서는 구글 로그인이 되지 않습니다.\n인터넷 주소(https://…)로 올린 장부에서 로그인해 주세요.");
+      return;
+    }
+    if (IN_APP) {
+      alert("카카오톡·네이버 등 앱 안의 브라우저에서는 구글 로그인이 막혀 있습니다.\n\n오른쪽 위 ⋮ 메뉴 → '다른 브라우저로 열기'(크롬·사파리)로 열어 주세요.");
+      return;
+    }
+    if (!auth) { toast("로그인 기능을 불러오는 중입니다. 잠시 후 다시 눌러 주세요"); return; }
+    const p = new firebase.auth.GoogleAuthProvider();
+    p.setCustomParameters({ prompt: "select_account" });
+    try {
+      await auth.signInWithPopup(p);
+    } catch (e) {
+      if (e && (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment")) {
+        return auth.signInWithRedirect(p);
+      }
+      loginError(e);
+    }
+  }
+  function loginError(e) {
+    if (!e || !e.code) return;
+    const m = {
+      "auth/popup-closed-by-user": "",
+      "auth/cancelled-popup-request": "",
+      "auth/unauthorized-domain": "이 주소는 로그인 허용 목록에 없습니다. Firebase 콘솔 → Authentication → 설정 → 승인된 도메인에 추가해 주세요",
+      "auth/network-request-failed": "인터넷 연결을 확인해 주세요",
+      "auth/operation-not-allowed": "Firebase 콘솔에서 Google 로그인을 '사용 설정'해 주세요"
+    };
+    const msg = e.code in m ? m[e.code] : "로그인하지 못했습니다 (" + e.code + ")";
+    if (msg) toast(msg);
+  }
+
+  async function logout() {
+    hideMenu();
+    if (inflight > 0 || syncState === "offline") {
+      toast("아직 올라가지 않은 변경을 저장하는 중입니다…");
+      try {
+        await Promise.race([db.waitForPendingWrites(), new Promise((_, rej) => setTimeout(rej, 8000))]);
+      } catch (e) {
+        if (!confirm("인터넷이 끊겨 아직 저장되지 않은 변경이 있습니다.\n지금 로그아웃하면 그 변경은 사라집니다. 그래도 로그아웃할까요?")) return;
+      }
+    }
+    if (!confirm("로그아웃할까요?\n장부는 구글 계정에 그대로 있고, 이 기기에 남은 사본만 지웁니다.")) return;
+    unsubs.forEach((f) => f()); unsubs = [];
+    try { localStorage.removeItem(LAST_UID); } catch (e) {}
+    await auth.signOut();
+    try { await db.terminate(); await db.clearPersistence(); } catch (e) {}
+    location.reload();
+  }
+
+  function startSync(u) {
+    if (user && user.uid === u.uid) return;
+    user = u;
+    try { localStorage.setItem(LAST_UID, u.uid); } catch (e) {}
+    localPre = { listings: S.listings.slice(), clients: S.clients.slice(), demo: S.demo };
+    S.demo = false;
+    cloudMap = { listings: {}, clients: {} };
+    remote = { listings: [], clients: [] };
+    gotSnap = { listings: false, clients: false };
+    gotServer = { listings: false, clients: false };
+    cloudInitDone = false;
+    cloudLoading = true; syncState = "loading";
+    closeDetail();
+    S.listings = []; S.clients = [];
+    render();
+    COLS.forEach((name) => {
+      unsubs.push(col(name).onSnapshot({ includeMetadataChanges: true },
+        (snap) => onSnap(name, snap),
+        (err) => {
+          syncState = "error"; cloudLoading = false; render();
+          toast(err && err.code === "permission-denied"
+            ? "장부에 접근할 권한이 없습니다. Firestore 보안 규칙을 확인해 주세요"
+            : "장부를 불러오지 못했습니다");
+        }));
+    });
+  }
+
+  function stopSync() {
+    unsubs.forEach((f) => f()); unsubs = [];
+    const was = !!user;
+    user = null; cloudInitDone = false; cloudLoading = false; syncState = "off";
+    if (was || !S.listings.length) { if (!restore()) loadSeed(); normalize(); }
+    render();
+  }
+
+  function onSnap(name, snap) {
+    const recs = [];
+    snap.forEach((d) => recs.push(Object.assign({}, d.data(), { id: d.id })));
+    remote[name] = recs;
+    gotSnap[name] = true;
+    if (!snap.metadata.fromCache) gotServer[name] = true;
+
+    if (!cloudInitDone) {
+      const seenBefore = (() => { try { return !!localStorage.getItem(MERGED + user.uid); } catch (e) { return false; } })();
+      const ready = COLS.every((c) => gotServer[c]) || (seenBefore && COLS.every((c) => gotSnap[c]));
+      if (ready) firstLoad();
+      return;
+    }
+
+    const map = {}; recs.forEach((r) => { map[r.id] = sig(r); });
+    cloudMap[name] = map;
+    if (COLS.every((c) => gotServer[c]) && syncState === "loading") { syncState = inflight ? "saving" : "saved"; renderAccount(); }
+    if (snap.metadata.hasPendingWrites) return;    // 내가 방금 올린 것 — 화면은 이미 맞습니다
+    if (applyRemote(name, recs)) afterRemoteChange(name);
+  }
+
+  /** 로그인 후 처음 한 번: 계정 장부를 불러오고, 이 기기에만 있던 자료를 합칠지 정합니다 */
+  function firstLoad() {
+    cloudInitDone = true; cloudLoading = false;
+    COLS.forEach((name) => {
+      const map = {}; remote[name].forEach((r) => { map[r.id] = sig(r); });
+      cloudMap[name] = map;
+    });
+    S.listings = remote.listings.slice(); S.clients = remote.clients.slice();
+    sortByCreated();
+
+    const key = MERGED + user.uid;
+    let asked = false;
+    try { asked = !!localStorage.getItem(key); } catch (e) {}
+    if (!asked && localPre && !localPre.demo) {
+      const ids = {}; remote.listings.concat(remote.clients).forEach((r) => { ids[r.id] = 1; });
+      const xl = localPre.listings.filter((r) => !ids[r.id]);
+      const xc = localPre.clients.filter((r) => !ids[r.id]);
+      if (xl.length + xc.length) {
+        const cloudEmpty = !remote.listings.length && !remote.clients.length;
+        const ok = cloudEmpty || confirm("이 기기에만 있던 매물 " + xl.length + "건 · 손님 " + xc.length + "명을\n구글 계정 장부에 합칠까요?\n\n[취소]를 누르면 계정 장부만 보이고, 이 기기 자료는 지우지 않고 남겨 둡니다.");
+        if (ok) {
+          S.listings = xl.concat(S.listings); S.clients = xc.concat(S.clients);
+          try { localStorage.setItem(STORE, JSON.stringify({ listings: [], clients: [], demo: false })); } catch (e) {}
+          toast(cloudEmpty ? "이 기기 장부를 구글 계정에 올렸습니다" : "매물 " + xl.length + "건 · 손님 " + xc.length + "명을 합쳤습니다");
+        }
+      }
+    } else if (!asked) {
+      toast((user.displayName || "") + "님 장부를 불러왔습니다");
+    }
+    try { localStorage.setItem(key, "1"); } catch (e) {}
+    normalize();
+    syncState = COLS.every((c) => gotServer[c]) ? "saved" : "loading";
+    lastSync = new Date();
+    pushCloud();
+    render();
+  }
+
+  function sortByCreated() {
+    const by = (a, b) => String(b.created || "").localeCompare(String(a.created || ""));
+    S.listings.sort(by); S.clients.sort(by);
+  }
+
+  /** 다른 기기에서 바뀐 내용을 화면 자료에 반영합니다. 바뀐 게 없으면 false */
+  function applyRemote(name, recs) {
+    const cur = arrOf(name);
+    const curSig = {}; cur.forEach((r) => { curSig[r.id] = sig(r); });
+    const changed = recs.length !== cur.length || recs.some((r) => curSig[r.id] !== sig(r));
+    if (!changed) return false;
+    const byId = {}; recs.forEach((r) => { byId[r.id] = r; });
+    const kept = cur.filter((r) => byId[r.id]).map((r) => byId[r.id]);
+    const keptIds = {}; kept.forEach((r) => { keptIds[r.id] = 1; });
+    const fresh = recs.filter((r) => !keptIds[r.id]);
+    const next = fresh.concat(kept);
+    next.forEach((r) => { if (!Array.isArray(r.log)) r.log = []; if (name === "clients" && !Array.isArray(r.wants)) r.wants = []; });
+    if (name === "listings") S.listings = next; else S.clients = next;
+    return true;
+  }
+
+  function afterRemoteChange(name) {
+    lastSync = new Date();
+    const detailOpen = $("detail").classList.contains("on");
+    const sel = S.sel;
+    render();
+    if (detailOpen && sel && S.tab === name) {
+      if (!current()) { closeDetail(); toast("다른 기기에서 이 건을 지웠습니다"); }
+      else {
+        const typing = document.activeElement && document.activeElement.id === "logInput";
+        if (!typing) openDetail();
+      }
+    }
+  }
+
+  /** 바뀐 건만 골라 클라우드에 올립니다 (고칠 때마다 바로 실행) */
+  function pushCloud() {
+    if (!user || !db || !cloudInitDone) return;
+    const ops = [];
+    COLS.forEach((name) => {
+      const seen = {};
+      arrOf(name).forEach((r) => {
+        if (!r.id) r.id = uid();
+        seen[r.id] = 1;
+        const s = sig(r);
+        if (cloudMap[name][r.id] !== s) { ops.push(["set", name, r.id, cleanForCloud(r)]); cloudMap[name][r.id] = s; }
+      });
+      Object.keys(cloudMap[name]).forEach((id) => {
+        if (!seen[id]) { ops.push(["del", name, id]); delete cloudMap[name][id]; }
+      });
+    });
+    if (!ops.length) return;
+    syncState = navigator.onLine ? "saving" : "offline"; renderAccount();
+    for (let i = 0; i < ops.length; i += 450) {          // 한 번에 500건까지라 나눠서
+      const batch = db.batch();
+      ops.slice(i, i + 450).forEach((op) => {
+        const ref = col(op[1]).doc(op[2]);
+        if (op[0] === "set") batch.set(ref, op[3]); else batch.delete(ref);
+      });
+      inflight++;
+      setTimeout(() => { if (inflight && syncState === "saving") { syncState = "offline"; renderAccount(); } }, 5000);
+      batch.commit().then(() => {
+        inflight--; lastSync = new Date();
+        if (!inflight) syncState = "saved";
+        renderAccount();
+      }).catch((e) => {
+        inflight--; syncState = "error"; renderAccount();
+        toast(e && e.code === "permission-denied" ? "저장 권한이 없습니다. Firestore 보안 규칙을 확인해 주세요" : "클라우드에 저장하지 못했습니다");
+        COLS.forEach((name) => { cloudMap[name] = {}; remote[name].forEach((r) => { cloudMap[name][r.id] = sig(r); }); });
+      });
+    }
+  }
+
+  window.addEventListener("online", () => { if (user && inflight) { syncState = "saving"; renderAccount(); } });
+  window.addEventListener("offline", () => { if (user) { syncState = "offline"; renderAccount(); } });
+
+  /* 상단 바: 로그인 단추 / 저장 상태 + 프로필 */
+  const G_LOGO = '<svg class="g" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+
+  function avatarHtml(u) {
+    const ch = esc(((u.displayName || u.email || "?").trim()[0] || "?").toUpperCase());
+    return u.photoURL ? '<img src="' + esc(u.photoURL) + '" alt="" referrerpolicy="no-referrer" onerror="this.replaceWith(document.createTextNode(\'' + ch + '\'))">' : ch;
+  }
+  function syncText() {
+    if (syncState === "loading") return "불러오는 중…";
+    if (syncState === "saving") return "저장 중…";
+    if (syncState === "offline") return "오프라인 · 연결되면 저장";
+    if (syncState === "error") return "저장 오류";
+    return "자동 저장됨" + (lastSync ? " · " + clock(lastSync) : "");
+  }
+
+  function renderAccount() {
+    const el = $("acct"); if (!el) return;
+    $("savedTag").style.display = user ? "none" : "";
+    if (!user) {
+      el.innerHTML = (CLOUD_ON && lastUid() && !auth)
+        ? '<span class="syncpill s-loading"><span class="sd"></span><span class="t">불러오는 중…</span></span>'
+        : '<button class="btn gbtn" id="btnLogin">' + G_LOGO + "<span>로그인</span></button>";
+      const b = $("btnLogin"); if (b) b.onclick = login;
+      return;
+    }
+    el.innerHTML =
+      '<span class="syncpill s-' + syncState + '" title="' + esc(syncText()) + '"><span class="sd"></span><span class="t">' + esc(syncText()) + "</span></span>" +
+      '<button class="avatar" id="btnAvatar" aria-label="계정">' + avatarHtml(user) + "</button>";
+    $("btnAvatar").onclick = (e) => { e.stopPropagation(); toggleMenu(); };
+  }
+
+  function toggleMenu() {
+    const m = $("acctMenu");
+    if (!m.hidden) return hideMenu();
+    m.innerHTML =
+      '<div class="who"><span class="avatar">' + avatarHtml(user) + "</span><div><b>" + esc(user.displayName || "") + "</b>" +
+        "<span>" + esc(user.email || "") + "</span></div></div>" +
+      "<p>이 계정으로 로그인한 모든 기기(사무실 PC·휴대폰)에서 같은 장부가 보입니다. 고칠 때마다 바로 저장되고, " +
+        "인터넷이 끊겨도 계속 쓰시면 연결될 때 올라갑니다." +
+        (persistOK ? "" : "<br><b>이 브라우저는 오프라인 보관이 안 됩니다. 저장 중일 때 창을 닫지 마세요.</b>") + "</p>" +
+      '<button class="btn" id="btnLogout">로그아웃</button>';
+    m.hidden = false;
+    $("btnLogout").onclick = logout;
+  }
+  function hideMenu() { const m = $("acctMenu"); if (m) m.hidden = true; }
+  document.addEventListener("click", (e) => {
+    const m = $("acctMenu");
+    if (m && !m.hidden && !m.contains(e.target)) hideMenu();
+  });
+
+  /** 로그인 권유 줄 (로그인 전, '나중에'를 누르지 않았을 때만) */
+  function renderLoginBar() {
+    const bar = $("loginBar"); if (!bar) return;
+    let later = false; try { later = !!localStorage.getItem(LOGIN_LATER); } catch (e) {}
+    if (!CLOUD_ON || user || cloudLoading || later || lastUid()) { bar.innerHTML = ""; return; }
+    bar.innerHTML = '<div class="loginbar">' +
+      svg('<path d="M7 18.5h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.1 9.6 4.5 4.5 0 0 0 7 18.5z"/>') +
+      "<span><b>구글로 로그인</b><span class=\"hide-sm\"> 하면 사무실 PC·휴대폰 어디서든 같은 장부를 보고, 입력하는 즉시 자동 저장됩니다.</span></span>" +
+      '<span class="acts"><button class="btn primary" id="lbLogin">로그인</button>' +
+      '<button class="btn later" id="lbLater">나중에</button></span></div>';
+    $("lbLogin").onclick = login;
+    $("lbLater").onclick = () => { try { localStorage.setItem(LOGIN_LATER, "1"); } catch (e) {} renderLoginBar(); };
+  }
+
+  /* ── 거르기 · 정렬 ──────────────────────────────────────────────────── */
+  function visible() {
+    let arr = list().slice();
+    if (S.type !== "전체")
+      arr = arr.filter((r) => (isL() ? r.type === S.type : (r.wants || []).indexOf(S.type) >= 0));
+    if (S.deals.length)  arr = arr.filter((r) => S.deals.indexOf(r.deal) >= 0);
+    if (S.status.length) arr = arr.filter((r) => S.status.indexOf(r.status) >= 0);
+    if (S.q.trim()) {
+      const q = S.q.trim().toLowerCase();
+      arr = arr.filter((r) => JSON.stringify(r).toLowerCase().indexOf(q) >= 0);
+    }
+    arr.sort((a, b) => {
+      if (S.sort === "price-desc") return (isL() ? priceValue(b) : num(b.bmax)) - (isL() ? priceValue(a) : num(a.bmax));
+      if (S.sort === "price-asc")  return (isL() ? priceValue(a) : num(a.bmax)) - (isL() ? priceValue(b) : num(b.bmax));
+      if (S.sort === "area")       return String(a.area || "").localeCompare(String(b.area || ""), "ko");
+      return String(b.created || "").localeCompare(String(a.created || ""));
+    });
+    return arr;
+  }
+  const filtered = () => S.type !== "전체" || S.deals.length || S.status.length || S.q.trim();
+
+  /* ── 화면 그리기 ────────────────────────────────────────────────────── */
+  function render() {
+    $("tabL").setAttribute("aria-selected", isL() ? "true" : "false");
+    $("tabC").setAttribute("aria-selected", isL() ? "false" : "true");
+    document.querySelector(".seg").dataset.i = isL() ? "0" : "1";
+    $("railTitle").textContent = isL() ? "매물 종류" : "찾는 종류";
+    $("addLabel").textContent  = isL() ? "매물 등록" : "손님 등록";
+    $("q").placeholder = isL() ? "지역·건물명·의뢰인·메모 검색" : "이름·연락처·희망지역·메모 검색";
+    renderAccount(); renderLoginBar(); renderTodo(); renderFileBar(); renderDraftBar(); renderRail(); renderStats(); renderChips(); renderNotice(); renderList();
+  }
+
+  /* ── 오늘 챙길 일 ───────────────────────────────────────────────────── */
+  let todoOpen = (() => { try { return localStorage.getItem("sinheung-todo") !== "0"; } catch (e) { return true; } })();
+
+  function todoItems() {
+    const out = [];
+    S.listings.forEach((l) => {
+      if (l.status !== "계약완료" && l.next) {
+        const n = dday(l.next);
+        if (n != null && n <= 0) out.push({ k: n < 0 ? "late" : "call", kind: "연락", n: n,
+          text: (l.oname || "의뢰인") + " — " + lname(l) + " 의뢰인", tab: "listings", id: l.id });
+      }
+      if (l.status === "계약완료" && l.bdate) {
+        const n = dday(l.bdate);
+        if (n != null && n >= 0 && n <= 7) out.push({ k: "warn", kind: "잔금", n: n,
+          text: (l.building || lname(l)) + " 잔금" + (num(l.comm) && l.paid !== "받음" ? " · 보수 " + man(l.comm) + "만 받을 날" : ""), tab: "listings", id: l.id });
+      }
+      if (l.status === "계약완료" && num(l.comm) && l.paid !== "받음") {
+        const n = l.bdate ? dday(l.bdate) : null;
+        if (n == null || n <= 0) out.push({ k: "money", kind: "보수", n: n == null ? 0 : n,
+          text: lname(l) + " 중개보수 " + man(l.comm) + "만원 아직 못 받음", tab: "listings", id: l.id });
+      }
+    });
+    S.clients.forEach((c) => {
+      if (c.status === "계약완료") return;
+      if (c.next) {
+        const n = dday(c.next);
+        if (n != null && n <= 0) out.push({ k: n < 0 ? "late" : "call", kind: "연락", n: n,
+          text: (c.name || "손님") + " 손님 — " + (c.wants || []).join("·"), tab: "clients", id: c.id });
+      }
+      if (c.status === "찾는중" && c.movein) {
+        const n = dday(c.movein);
+        if (n != null && n >= 0 && n <= 21) out.push({ k: "warn", kind: "입주", n: n,
+          text: (c.name || "손님") + " 입주 희망일 다가옴 · 맞는 매물 " + matchListings(c).length + "건", tab: "clients", id: c.id });
+      }
+    });
+    return out.sort((a, b) => a.n - b.n);
+  }
+
+  function renderTodo() {
+    const items = todoItems();
+    const late = items.filter((i) => i.n < 0).length;
+    $("todoBox").innerHTML = '<div class="todo' + (todoOpen ? " open" : "") + '">' +
+      '<button class="todo-head" id="todoToggle" aria-expanded="' + todoOpen + '">' +
+        svg('<path d="M6 10a6 6 0 0 1 12 0c0 5 2 6.5 2 6.5H4S6 15 6 10z"/><path d="M10 19.5a2 2 0 0 0 4 0"/>') +
+        "<b>오늘 챙길 일</b>" +
+        '<span class="cnt' + (items.length ? "" : " zero") + '">' + items.length + "</span>" +
+        (late ? '<span class="todo-when late">밀린 것 ' + late + "건</span>" : "") +
+        '<span class="chev-d">' + svg('<path d="m6 9 6 6 6-6"/>') + "</span>" +
+      "</button>" +
+      (todoOpen ? '<div class="todo-list">' + (items.length ? items.map((it) =>
+        '<button class="todo-item" data-jtab="' + it.tab + '" data-jid="' + it.id + '">' +
+          '<span class="todo-kind k-' + it.k + '">' + it.kind + "</span>" +
+          '<span class="todo-text">' + esc(it.text) + "</span>" +
+          '<span class="todo-when' + (it.n < 0 ? " late" : "") + '">' + ddayText(it.n) + "</span>" +
+        "</button>").join("")
+        : '<div class="todo-empty">오늘은 챙길 일이 없습니다. 매물·손님 상세에서 다음 연락일이나 잔금일을 적어 두면 그날 여기에 뜹니다.</div>') +
+      "</div>" : "") + "</div>";
+
+    $("todoToggle").onclick = () => {
+      todoOpen = !todoOpen;
+      try { localStorage.setItem("sinheung-todo", todoOpen ? "1" : "0"); } catch (e) {}
+      renderTodo();
+    };
+    $("todoBox").querySelectorAll("[data-jid]").forEach((b) => {
+      b.onclick = () => jumpTo(b.dataset.jtab, b.dataset.jid);
+    });
+  }
+
+  /** 다른 장부의 한 건으로 바로 이동해 상세를 엽니다 */
+  function jumpTo(tab, id) {
+    if (S.tab !== tab) {
+      S.tab = tab; S.type = "전체"; S.deals = []; S.status = []; S.q = ""; $("q").value = "";
+    }
+    S.sel = id;
+    render(); openDetail();
+  }
+
+  function renderRail() {
+    const src = list();
+    const count = (t) => (isL() ? src.filter((r) => r.type === t).length
+                                : src.filter((r) => (r.wants || []).indexOf(t) >= 0).length);
+    const item = (t, c) =>
+      '<button class="side-item" data-type="' + esc(t) + '" aria-current="' + (S.type === t) + '">' +
+        svg(ICON[t]) + "<span>" + esc(t) + '</span><span class="n">' + c + "</span></button>";
+    $("rail").innerHTML = item("전체", src.length) + TYPES.map((t) => item(t, count(t))).join("");
+  }
+
+  function renderStats() {
+    const go   = S.listings.filter((l) => l.status === "광고중").length;
+    const hold = S.listings.filter((l) => l.status === "보류").length;
+    const look = S.clients.filter((c) => c.status === "찾는중").length;
+    const ym = today().slice(0, 7);
+    const month = S.listings.filter((l) => l.status === "계약완료" && String(l.cdate || "").slice(0, 7) === ym);
+    const monthComm = month.reduce((s, l) => s + num(l.comm), 0);
+    const unpaid = S.listings.filter((l) => l.status === "계약완료" && l.paid !== "받음")
+                             .reduce((s, l) => s + num(l.comm), 0);
+    const row = (k, v, cls) => '<div class="stat ' + (cls || "") + '"><dt>' + k + "</dt><dd>" + v + "</dd></div>";
+    $("stats").innerHTML =
+      row("광고중", go, "is-green") + row("보류", hold, "is-orange") + row("찾는 손님", look) +
+      row("이번 달 계약", month.length + "건", "is-blue") +
+      row("이번 달 보수", man(monthComm) + "만", "is-blue") +
+      row("못 받은 보수", man(unpaid) + "만", unpaid ? "is-red" : "");
+  }
+
+  function renderChips() {
+    $("dealChips").innerHTML = DEALS.map((d) =>
+      '<button class="chip" data-deal="' + d + '" aria-pressed="' + (S.deals.indexOf(d) >= 0) + '">' + d + "</button>").join("");
+    $("statusChips").innerHTML = (isL() ? L_STATUS : C_STATUS).map((d) =>
+      '<button class="chip" data-status="' + d + '" aria-pressed="' + (S.status.indexOf(d) >= 0) + '">' + d + "</button>").join("");
+    $("btnReset").classList.toggle("hidden", !filtered());
+  }
+
+  function renderNotice() {
+    $("demoNote").innerHTML = S.demo
+      ? '<div class="notice"><b>예시 자료</b><span class="hide-sm">마산 합성동 일대를 가정해 채워둔 견본입니다.</span>' +
+        '<button class="btn" id="btnClearDemo">지우고 빈 장부로</button></div>'
+      : "";
+    const b = $("btnClearDemo");
+    if (b) b.onclick = () => {
+      if (!confirm("예시 자료를 모두 지우고 빈 장부로 시작할까요?")) return;
+      S.listings = []; S.clients = []; S.demo = false; S.sel = null;
+      closeDetail(); save(); render(); toast("빈 장부로 시작합니다");
+    };
+  }
+
+  function renderList() {
+    const data = visible();
+    const total = list().length;
+    $("resultLine").textContent = total === 0 ? ""
+      : filtered() ? data.length + "건 (전체 " + total + "건 중)" : "전체 " + total + "건";
+
+    if (cloudLoading) {
+      $("resultLine").textContent = "";
+      $("listCard").innerHTML = '<div class="empty">' + svg('<path d="M7 18.5h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.1 9.6 4.5 4.5 0 0 0 7 18.5z"/>') +
+        "<h4>장부를 불러오는 중입니다</h4><p>구글 계정에 저장된 장부를 가져오고 있습니다.</p></div>";
+      return;
+    }
+    if (!data.length) { $("listCard").innerHTML = emptyView(total); wireEmpty(); return; }
+    $("listCard").innerHTML = isL() ? listingTable(data) + listingRows(data)
+                                    : clientTable(data)  + clientRows(data);
+    $("listCard").querySelectorAll("[data-id]").forEach((el) => {
+      el.onclick = () => { S.sel = el.dataset.id; openDetail(); renderList(); };
+    });
+    $("listCard").querySelectorAll("[data-del]").forEach((b) => {
+      b.onclick = (e) => { e.stopPropagation(); removeById(b.dataset.del); };
+    });
+    $("listCard").querySelectorAll("[data-add]").forEach((b) => {
+      b.onclick = (e) => { e.stopPropagation(); openForm(null); };
+    });
+    $("listCard").querySelectorAll("th.sortable").forEach((th) => {
+      th.onclick = () => {
+        const k = th.dataset.sort;
+        S.sort = (k === "price" && S.sort === "price-desc") ? "price-asc"
+               : (k === "price") ? "price-desc" : k;
+        $("sort").value = S.sort;
+        renderList();
+      };
+    });
+  }
+
+  /** 광고 며칠째인지 — 60일 넘으면 주황색으로 */
+  function ageTag(l) {
+    if (l.status === "계약완료") return l.cdate ? '<span class="age">' + shortDate(l.cdate) + " 계약</span>" : "";
+    const n = dday(l.created);
+    if (n == null || n > 0) return "";
+    const d = -n;
+    return '<span class="age' + (d >= 60 ? " old" : "") + '">' + (d === 0 ? "오늘 등록" : (l.status === "보류" ? "보류 " : "광고 ") + d + "일째") + "</span>";
+  }
+  /** 손님에게 맞는 매물 개수 */
+  function mcount(c) {
+    if (c.status === "계약완료") return "";
+    const n = matchListings(c).length;
+    return '<span class="mcount' + (n ? "" : " zero") + '">' + (n ? "맞는 매물 " + n : "없음") + "</span>";
+  }
+
+  /** 줄 끝의 삭제(✕) 단추 */
+  const xCell = (id) =>
+    '<td class="rowact"><button class="xbtn" data-del="' + id + '" title="삭제" aria-label="삭제">' +
+    svg('<path d="m7 7 10 10M17 7 7 17"/>') + "</button></td>";
+
+  /** 표 맨 아래 '+ 추가' 줄 */
+  const addRow = (cols) =>
+    '<tr class="addrow"><td colspan="' + cols + '"><button class="addbtn" data-add="1">' +
+    svg('<path d="M12 5.5v13M5.5 12h13"/>') + "<span>" + (isL() ? "매물" : "손님") + " 추가</span></button></td></tr>";
+
+  const caret = (k) => (S.sort === k || (k === "price" && S.sort.indexOf("price") === 0))
+    ? '<span class="caret">' + (S.sort === "price-asc" ? "▲" : "▼") + "</span>" : "";
+
+  function listingTable(d) {
+    return '<div class="tablewrap"><table><thead><tr>' +
+      "<th>번호</th><th>종류</th>" +
+      '<th class="sortable" data-sort="price">거래 · 금액 (만원)' + caret("price") + "</th>" +
+      '<th class="sortable" data-sort="area">위치 · 건물' + caret("area") + "</th>" +
+      "<th>면적</th><th>층</th><th>방/욕실</th><th>상태</th>" +
+      '<th class="sortable" data-sort="date">등록일' + caret("date") + "</th>" +
+      "<th></th></tr></thead><tbody>" + d.map((l) =>
+        '<tr data-id="' + l.id + '" data-active="' + (S.sel === l.id ? 1 : 0) + '">' +
+          '<td class="t-code">' + esc(l.code || "—") + "</td>" +
+          '<td><span class="tag">' + esc(l.type) + "</span></td>" +
+          '<td><div class="money">' + esc(priceText(l)) + '</div><div class="t-sub">' + esc(l.deal) +
+            (num(l.fee) ? " · 관리비 " + man(l.fee) : "") + "</div></td>" +
+          '<td><div class="t-main">' + esc(l.area || "—") + '</div><div class="t-sub">' + esc(l.building || "") + "</div></td>" +
+          '<td class="num">' + (num(l.m2) ? num(l.m2) + "㎡" : "—") +
+            (num(l.m2) ? '<div class="t-sub num">' + pyeong(l.m2) + "평</div>" : "") + "</td>" +
+          '<td class="num">' + (num(l.floors) ? esc((num(l.floor) || "-") + "/" + num(l.floors)) : "—") + "</td>" +
+          '<td class="num">' + (num(l.rooms) || num(l.baths) ? esc(num(l.rooms) + "/" + num(l.baths)) : "—") + "</td>" +
+          '<td><span class="badge ' + badgeClass(l.status) + '">' + esc(l.status) + "</span></td>" +
+          '<td class="t-sub num">' + esc(l.created || "") + ageTag(l) + "</td>" +
+          xCell(l.id) +
+        "</tr>").join("") + addRow(10) + "</tbody></table></div>";
+  }
+  function listingRows(d) {
+    return '<div class="rows">' + d.map((l) =>
+      '<div class="row" data-id="' + l.id + '"><div class="row-body">' +
+        '<div class="row-top"><span class="tag">' + esc(l.type) + "</span>" +
+          '<span class="badge ' + badgeClass(l.status) + '">' + esc(l.status) + "</span>" +
+          '<span class="t-code">' + esc(l.code || "") + "</span></div>" +
+        '<div class="money row-money">' + esc(l.deal) + " " + esc(priceText(l)) + "</div>" +
+        '<div class="row-meta">' + esc(l.area || "") + " · " + esc(l.building || "") + "</div>" +
+        '<div class="row-meta num">' + (num(l.m2) ? num(l.m2) + "㎡ (" + pyeong(l.m2) + "평)" : "") +
+          (num(l.floors) ? " · " + num(l.floor) + "/" + num(l.floors) + "층" : "") + "</div>" +
+        ageTag(l) +
+      "</div>" + xBtn(l.id) + svg('<path d="m9.5 6 6 6-6 6"/>', "chev") + "</div>").join("") +
+      addBar() + "</div>";
+  }
+  function clientTable(d) {
+    return '<div class="tablewrap"><table><thead><tr>' +
+      "<th>손님</th><th>연락처</th><th>찾는 종류</th><th>거래</th>" +
+      '<th class="sortable" data-sort="price">예산 (만원)' + caret("price") + "</th>" +
+      '<th class="sortable" data-sort="area">희망 지역' + caret("area") + "</th>" +
+      "<th>맞는 매물</th><th>입주 희망</th><th>상태</th>" +
+      '<th class="sortable" data-sort="date">등록일' + caret("date") + "</th>" +
+      "<th></th></tr></thead><tbody>" + d.map((c) =>
+        '<tr data-id="' + c.id + '" data-active="' + (S.sel === c.id ? 1 : 0) + '">' +
+          '<td class="t-main">' + esc(c.name || "—") + "</td>" +
+          '<td class="t-sub num">' + esc(c.phone || "") + "</td>" +
+          "<td>" + (c.wants || []).map((w) => '<span class="tag">' + esc(w) + "</span>").join(" ") + "</td>" +
+          "<td>" + esc(c.deal || "무관") + "</td>" +
+          '<td class="money">' + esc(budgetText(c)) + "</td>" +
+          "<td>" + esc(c.area || "—") + "</td>" +
+          "<td>" + mcount(c) + "</td>" +
+          '<td class="t-sub num">' + esc(c.movein || "—") + "</td>" +
+          '<td><span class="badge ' + badgeClass(c.status) + '">' + esc(c.status) + "</span></td>" +
+          '<td class="t-sub num">' + esc(c.created || "") + "</td>" +
+          xCell(c.id) +
+        "</tr>").join("") + addRow(11) + "</tbody></table></div>";
+  }
+  function clientRows(d) {
+    return '<div class="rows">' + d.map((c) =>
+      '<div class="row" data-id="' + c.id + '"><div class="row-body">' +
+        '<div class="row-top"><span class="t-main">' + esc(c.name || "") + "</span>" +
+          '<span class="badge ' + badgeClass(c.status) + '">' + esc(c.status) + "</span>" + mcount(c) + "</div>" +
+        '<div class="money row-money">' + esc(c.deal || "무관") + " " + esc(budgetText(c)) + "</div>" +
+        '<div class="row-meta">' + (c.wants || []).join(", ") + " · " + esc(c.area || "") + "</div>" +
+        '<div class="row-meta num">' + esc(c.phone || "") + "</div>" +
+      "</div>" + xBtn(c.id) + svg('<path d="m9.5 6 6 6-6 6"/>', "chev") + "</div>").join("") +
+      addBar() + "</div>";
+  }
+
+  const xBtn = (id) =>
+    '<button class="xbtn" data-del="' + id + '" title="삭제" aria-label="삭제">' +
+    svg('<path d="m7 7 10 10M17 7 7 17"/>') + "</button>";
+  const addBar = () =>
+    '<button class="addbtn" data-add="1">' + svg('<path d="M12 5.5v13M5.5 12h13"/>') +
+    "<span>" + (isL() ? "매물" : "손님") + " 추가</span></button>";
+
+  function emptyView(total) {
+    if (total === 0) return '<div class="empty">' +
+      svg('<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M8 12h8M8 16h5"/>') +
+      "<h4>장부가 비어 있습니다</h4><p>첫 " + (isL() ? "매물" : "손님") +
+      "을 등록하거나, 쓰던 엑셀 파일을 불러오세요.</p>" +
+      '<button class="btn primary" id="emptyAdd">' + (isL() ? "매물" : "손님") + " 등록</button></div>";
+    return '<div class="empty">' +
+      svg('<circle cx="11" cy="11" r="6.2"/><path d="m15.6 15.6 4 4"/>') +
+      "<h4>조건에 맞는 " + (isL() ? "매물" : "손님") + "이 없습니다</h4>" +
+      "<p>검색어나 필터를 바꿔 보세요.</p>" +
+      '<button class="btn" id="emptyReset">필터 해제</button></div>';
+  }
+  function wireEmpty() {
+    const a = $("emptyAdd"); if (a) a.onclick = () => openForm(null);
+    const r = $("emptyReset"); if (r) r.onclick = resetFilters;
+  }
+
+  /* ── 상세 패널 ──────────────────────────────────────────────────────── */
+  const current = () => list().find((r) => r.id === S.sel) || null;
+  const kv = (k, v, cls) => '<div class="kv"><dt>' + esc(k) + "</dt><dd" +
+    (cls ? ' class="' + cls + '"' : "") + ">" + (v == null || v === "" ? "—" : v) + "</dd></div>";
+  const kvT = (k, v, cls) => kv(k, esc(v), cls);
+
+  let closeT = null;
+  const telHref = (p) => String(p || "").replace(/[^0-9+]/g, "");
+
+  function openDetail() {
+    const r = current(); if (!r) return;
+    clearTimeout(closeT);
+    const keepScroll = $("detail").classList.contains("on") ? $("dBody").scrollTop : 0;
+    const STAT = isL() ? L_STATUS : C_STATUS;
+    const statusBar = '<div class="statusbar">' + STAT.map((s) =>
+      '<button class="chip" data-setstatus="' + s + '" aria-pressed="' + (r.status === s) + '">' + s + "</button>").join("") + "</div>";
+
+    const phone = isL() ? r.ophone : r.phone;
+    const quick = '<div class="quickacts">' +
+      (phone ? '<a class="btn" href="tel:' + esc(telHref(phone)) + '">' + svg('<path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 0 0 6.5 6.5l1.5-2 4 1.5V19a1.5 1.5 0 0 1-1.5 1.5A16 16 0 0 1 3.5 5.5 1.5 1.5 0 0 1 5 4z"/>') + "전화</a>" +
+               '<a class="btn" href="sms:' + esc(telHref(phone)) + '">' + svg('<path d="M4 5.5h16v10H9l-5 4z"/>') + "문자</a>" : "") +
+      (isL() ? '<button class="btn" id="copyIntro">' + svg('<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/>') + "소개글 복사</button>" : "") +
+      "</div>";
+
+    /* 다음 연락일 + 연락 기록 */
+    const nd = dday(r.next);
+    const nextLbl = r.next
+      ? '<span class="lbl">다음 연락 <b class="' + (nd < 0 ? "late" : "") + '">' + shortDate(r.next) + " (" + ddayText(nd) + ")</b></span>"
+      : '<span class="lbl">다음 연락일</span>';
+    const nextChip = (label, n) => '<button class="chip" data-next="' + addDays(n) + '" aria-pressed="' + (r.next === addDays(n)) + '">' + label + "</button>";
+    const logs = (r.log || []).slice().map((g, i) => ({ g: g, i: i })).reverse();
+    const contactGroup =
+      '<div class="group"><h4>연락 · 상담 기록</h4><div class="rowsbox">' +
+        '<div class="nextrow">' + nextLbl +
+          nextChip("내일", 1) + nextChip("3일 뒤", 3) + nextChip("1주 뒤", 7) +
+          '<input type="date" id="nextDate" value="' + esc(r.next || "") + '" aria-label="다음 연락일 직접 고르기">' +
+          (r.next ? '<button class="chip" data-next="">지우기</button>' : "") +
+        "</div>" +
+        '<div class="logadd"><input id="logInput" placeholder="통화·상담 내용 한 줄 (엔터로 기록)" autocomplete="off">' +
+          '<button class="btn primary" id="logAdd">기록</button></div>' +
+        (logs.length ? logs.map((x) =>
+          '<div class="log"><time>' + esc(x.g.d || "") + "</time><span>" + esc(x.g.t || "") + "</span>" +
+          '<button data-dellog="' + x.i + '" aria-label="기록 지우기">✕</button></div>').join("")
+          : '<div class="boxnote">아직 기록이 없습니다.</div>') +
+      "</div></div>";
+
+    if (isL()) {
+      const fee = legalFee(r);
+      const done = r.status === "계약완료";
+      const mc = done ? [] : matchClients(r);
+      const age = dday(r.created);
+
+      $("dTitle").textContent = lname(r);
+      $("dSub").textContent = (r.code ? r.code + " · " : "") + (r.building || "");
+
+      let contract;
+      if (done) {
+        const bd = dday(r.bdate);
+        contract = '<div class="group"><h4>계약 · 중개보수</h4><dl class="rowsbox">' +
+          kvT("계약일", r.cdate) +
+          kv("잔금일", r.bdate ? esc(r.bdate) + ' <span style="color:var(--label-3)">(' + ddayText(bd) + ")</span>" : "") +
+          kv("받을 보수", num(r.comm) ? esc(man(r.comm)) + "만원" : (fee ? '<span style="color:var(--label-3)">미입력</span><button class="mini" id="feeFill">상한 ' + manDec(fee.amt * 2) + "만 넣기</button>" : "")) +
+          kv("받았나요", r.paid === "받음" ? "받음" : '미수<button class="mini" id="paidBtn">받음 처리</button>',
+             r.paid === "받음" ? "good" : (num(r.comm) ? "late" : "")) +
+          (fee ? kv("법정 상한", "한쪽 " + manDec(fee.amt) + "만 · 양쪽 " + manDec(fee.amt * 2) + "만") : "") +
+          "</dl>" + (fee ? '<p class="feehint">' + esc(feeNote(fee, r)) + "</p>" : "") + "</div>";
+      } else {
+        contract = fee ? '<div class="group"><h4>예상 중개보수</h4><dl class="rowsbox">' +
+          kv("법정 상한", "한쪽 " + manDec(fee.amt) + "만 · 양쪽 " + manDec(fee.amt * 2) + "만") +
+          '</dl><p class="feehint">' + esc(feeNote(fee, r)) + "</p></div>" : "";
+      }
+
+      const matchGroup = done ? "" :
+        '<div class="group"><div class="group-head"><h4>맞는 손님 ' + mc.length + "명</h4>" +
+          (mc.length ? '<button class="btn" id="copyIntro2">소개글 복사</button>' : "") + '</div><div class="rowsbox">' +
+        (mc.length ? mc.map((c) =>
+          '<button class="match" data-jump="clients" data-jid="' + c.id + '"><span class="m-main"><b>' + esc(c.name || "손님") + "</b>" +
+          '<span class="m-sub">' + esc((c.deal || "무관") + " " + budgetText(c) + " · " + (c.area || "")) + "</span></span>" +
+          '<span class="badge ' + badgeClass(c.status) + '">' + esc(c.status) + "</span>" +
+          svg('<path d="m9.5 6 6 6-6 6"/>', "chev") + "</button>").join("")
+          : '<div class="boxnote">찾는 종류·거래·예산·지역이 맞는 손님이 아직 없습니다.</div>') +
+        "</div></div>";
+
+      $("dBody").innerHTML =
+        '<div class="hero-money">' + esc(priceText(r)) + "<small>만원</small></div>" +
+        '<div class="hero-sub">' + esc(r.deal) + (num(r.fee) ? " · 관리비 " + man(r.fee) + "만원" : "") +
+          (!done && age != null && age <= 0 ? " · 광고 " + (-age) + "일째" : "") + "</div>" +
+        statusBar + quick + matchGroup + contactGroup + contract +
+        '<div class="group"><h4>의뢰인</h4><dl class="rowsbox">' +
+          kvT("이름", r.oname) + phoneRow(r.ophone) + kvT("등록일", r.created) +
+        "</dl></div>" +
+        '<div class="group"><h4>기본</h4><dl class="rowsbox">' +
+          kvT("종류", r.type) + kvT("지역", r.area) + kvT("건물·상세", r.building) +
+          kvT("면적", num(r.m2) ? num(r.m2) + "㎡ (" + pyeong(r.m2) + "평)" : "") +
+          kvT("층수", num(r.floors) ? num(r.floor) + "층 / " + num(r.floors) + "층" : "") +
+        "</dl></div>" +
+        '<div class="group"><h4>상세</h4><dl class="rowsbox">' +
+          kvT("방/욕실", (num(r.rooms) || num(r.baths)) ? num(r.rooms) + "개 / " + num(r.baths) + "개" : "") +
+          kvT("주차", r.parking) + kvT("엘리베이터", r.elev) + kvT("방향", r.dir) +
+          kvT("준공", num(r.built) ? num(r.built) + "년" : "") + kvT("입주 가능", r.movein) +
+        "</dl></div>" +
+        '<div class="group"><h4>메모 (손님에게는 안 나감)</h4><dl class="rowsbox">' + kvT("내용", r.memo || "—", "left") + "</dl></div>";
+    } else {
+      const ml = r.status === "계약완료" ? [] : matchListings(r);
+      $("dTitle").textContent = r.name || "손님";
+      $("dSub").textContent = (r.wants || []).join(" · ");
+      $("dBody").innerHTML =
+        '<div class="hero-money">' + esc(budgetText(r)) + "<small>만원</small></div>" +
+        '<div class="hero-sub">' + esc(r.deal || "거래유형 무관") + (r.movein ? " · 입주 " + esc(r.movein) + " (" + ddayText(dday(r.movein)) + ")" : "") + "</div>" +
+        statusBar + quick +
+        (r.status === "계약완료" ? "" :
+          '<div class="group"><div class="group-head"><h4>맞는 매물 ' + ml.length + "건</h4>" +
+            (ml.length ? '<button class="btn" id="copyMatches">문자용으로 복사</button>' : "") + '</div><div class="rowsbox">' +
+          (ml.length ? ml.map((l) =>
+            '<button class="match" data-jump="listings" data-jid="' + l.id + '"><span class="m-main"><b>' + esc(lname(l)) + "</b> " +
+            '<span class="money">' + esc(l.deal + " " + priceText(l)) + "</span>" +
+            '<span class="m-sub">' + esc((l.building || "") + (num(l.m2) ? " · " + pyeong(l.m2) + "평" : "")) + "</span></span>" +
+            '<span class="badge ' + badgeClass(l.status) + '">' + esc(l.status) + "</span>" +
+            svg('<path d="m9.5 6 6 6-6 6"/>', "chev") + "</button>").join("")
+            : '<div class="boxnote">지금은 조건에 맞는 매물이 없습니다. 새 매물을 등록하면 여기에 바로 잡힙니다.</div>') +
+          "</div></div>") +
+        contactGroup +
+        '<div class="group"><h4>찾는 조건</h4><dl class="rowsbox">' +
+          kvT("종류", (r.wants || []).join(", ")) + kvT("희망 지역", r.area) +
+          kvT("희망 규모", r.size) + kvT("입주 희망", r.movein) +
+        "</dl></div>" +
+        '<div class="group"><h4>연락처</h4><dl class="rowsbox">' +
+          phoneRow(r.phone) + kvT("등록일", r.created) +
+        "</dl></div>" +
+        '<div class="group"><h4>메모</h4><dl class="rowsbox">' + kvT("내용", r.memo || "—", "left") + "</dl></div>";
+    }
+
+    wireDetail(r);
+
+    const dEl = $("detail");
+    dEl.classList.remove("closed");
+    dEl.setAttribute("aria-hidden", "false");
+    $("scrim").hidden = false;
+    $("dBody").scrollTop = keepScroll;
+    requestAnimationFrame(() => { dEl.classList.add("on"); $("scrim").classList.add("on"); });
+  }
+
+  /** 상세 패널 안의 단추들 연결 */
+  function wireDetail(r0) {
+    const body = $("dBody");
+    const R = () => current() || r0;
+    const refresh = () => { save(); render(); openDetail(); };
+
+    body.querySelectorAll("[data-setstatus]").forEach((b) => {
+      b.onclick = () => {
+        const rec = current(); if (!rec) return;
+        rec.status = b.dataset.setstatus;
+        let extra = "";
+        if (isL() && rec.status === "계약완료") {
+          if (!rec.cdate) rec.cdate = today();
+          if (!rec.paid) rec.paid = "미수";
+          extra = " · 잔금일·보수는 [수정]에서 적어 주세요";
+        }
+        refresh();
+        toast("상태를 " + rec.status + euro(rec.status) + " 바꿨습니다" + extra);
+      };
+    });
+    body.querySelectorAll("[data-jump]").forEach((b) => {
+      b.onclick = () => jumpTo(b.dataset.jump, b.dataset.jid);
+    });
+    body.querySelectorAll("[data-next]").forEach((b) => {
+      b.onclick = () => {
+        R().next = b.dataset.next; refresh();
+        toast(R().next ? "다음 연락일을 " + shortDate(R().next) + "로 잡았습니다" : "다음 연락일을 지웠습니다");
+      };
+    });
+    const nd = $("nextDate");
+    if (nd) nd.onchange = () => { R().next = nd.value; refresh(); };
+
+    const addLog = () => {
+      const inp = $("logInput"); const t = inp.value.trim();
+      if (!t) { inp.focus(); return; }
+      const rr = R(); rr.log = rr.log || []; rr.log.push({ d: today(), t: t });
+      let msg = "기록했습니다";
+      if (R().next && dday(R().next) <= 0) { R().next = ""; msg = "기록했습니다. 다음 연락일을 다시 잡아 주세요"; }
+      refresh(); toast(msg);
+      const again = $("logInput"); if (again) again.focus();
+    };
+    const la = $("logAdd"); if (la) la.onclick = addLog;
+    const li = $("logInput");
+    if (li) li.onkeydown = (e) => { if (e.key === "Enter" && !e.isComposing) { e.preventDefault(); addLog(); } };
+    body.querySelectorAll("[data-dellog]").forEach((b) => {
+      b.onclick = () => {
+        const i = +b.dataset.dellog; const g = R().log[i];
+        R().log.splice(i, 1); refresh();
+        toast("기록을 지웠습니다", () => { R().log.splice(i, 0, g); refresh(); });
+      };
+    });
+
+    const intro = () => copyText(introText(R()) + "\n\n신흥부동산", "소개글을 복사했습니다. 문자·카톡에 붙여넣으세요");
+    const ci = $("copyIntro"); if (ci) ci.onclick = intro;
+    const ci2 = $("copyIntro2"); if (ci2) ci2.onclick = intro;
+    const cm = $("copyMatches");
+    if (cm) cm.onclick = () => {
+      const ls = matchListings(R());
+      const txt = "안녕하세요 " + (R().name || "") + "님, 신흥부동산입니다.\n말씀하신 조건에 맞는 매물 안내드립니다.\n\n" +
+        ls.map((l, i) => (i + 1) + ". " + introText(l)).join("\n\n") +
+        "\n\n보고 싶으신 곳 있으시면 편하게 연락 주세요.";
+      copyText(txt, "매물 " + ls.length + "건을 문자용으로 복사했습니다");
+    };
+    const pb = $("paidBtn");
+    if (pb) pb.onclick = () => { R().paid = "받음"; refresh(); toast("중개보수 받음으로 표시했습니다"); };
+    const ff = $("feeFill");
+    if (ff) ff.onclick = () => { const f = legalFee(R()); if (!f) return; R().comm = Math.round(f.amt * 2 * 10) / 10; refresh(); toast("법정 상한(양쪽)으로 넣었습니다. 실제 받은 금액으로 고쳐 주세요"); };
+    const cp = body.querySelector("[data-copy]");
+    if (cp) cp.onclick = (e) => { e.stopPropagation(); copyText(cp.dataset.copy, "연락처를 복사했습니다"); };
+  }
+
+  function phoneRow(p) {
+    if (!p) return kvT("연락처", "");
+    return '<div class="kv"><dt>연락처</dt><dd><a href="tel:' + esc(telHref(p)) +
+      '" style="color:var(--tint);text-decoration:none">' + esc(p) + "</a>" +
+      '<button class="copy" data-copy="' + esc(p) + '">복사</button></dd></div>';
+  }
+  function closeDetail() {
+    const dEl = $("detail");
+    dEl.classList.remove("on");
+    dEl.setAttribute("aria-hidden", "true");
+    $("scrim").classList.remove("on");
+    clearTimeout(closeT);
+    closeT = setTimeout(() => { $("scrim").hidden = true; dEl.classList.add("closed"); }, 400);
+    S.sel = null;
+    renderList();
+  }
+
+  /* ── 임시저장 (작성하다 만 내용 보관) ────────────────────────────────
+     등록·수정 창에 뭔가 적기 시작하면 자동으로 보관해 둡니다.
+     창을 닫아도, 브라우저를 껐다 켜도 남아 있어서 나중에 이어 쓸 수 있습니다. */
+  const DRAFT = "sinheung-draft-v1";
+  let draftTimer = null;
+  let restored = false;         // 이번에 연 창이 임시저장에서 복구된 것인지
+
+  function allDrafts() {
+    try { return JSON.parse(localStorage.getItem(DRAFT) || "{}") || {}; }
+    catch (e) { return {}; }
+  }
+  function putDraft(d) {
+    const all = allDrafts();
+    if (d) all[S.tab] = d; else delete all[S.tab];
+    try { localStorage.setItem(DRAFT, JSON.stringify(all)); } catch (e) {}
+    renderDraftBar();
+  }
+  const getDraft = () => allDrafts()[S.tab] || null;
+  const dropDraft = () => putDraft(null);
+
+  /** 지금 창에 적혀 있는 값을 그대로 읽어 옵니다. */
+  function readForm() {
+    const fd = new FormData($("form"));
+    const o = {};
+    fd.forEach((v, k) => { if (k !== "wants") o[k] = typeof v === "string" ? v : v; });
+    o.wants = fd.getAll("wants");
+    return o;
+  }
+  /** 읽어 둔 값을 창에 다시 채웁니다. */
+  function fillForm(o) {
+    const f = $("form");
+    f.querySelectorAll('input[name="wants"]').forEach((cb) => {
+      cb.checked = (o.wants || []).indexOf(cb.value) >= 0;
+    });
+    Object.keys(o).forEach((k) => {
+      if (k === "wants") return;
+      const el = f.elements[k];
+      if (!el || !("value" in el)) return;
+      el.value = o[k];
+    });
+  }
+  /** 사람이 실제로 뭔가 적었는지 — 자동으로 채워진 기본값은 빼고 봅니다. */
+  function hasContent(o) {
+    const keys = isL()
+      ? ["area", "building", "oname", "ophone", "memo", "sale", "deposit", "rent", "m2"]
+      : ["name", "phone", "area", "size", "memo", "bmin", "bmax", "rmax"];
+    if (!isL() && (o.wants || []).length) return true;
+    return keys.some((k) => {
+      const v = String(o[k] == null ? "" : o[k]).trim();
+      return v !== "" && v !== "0";
+    });
+  }
+  /** 작성 중 자동 보관 */
+  function keepDraft() {
+    if ($("modal").hidden) return;
+    const data = readForm();
+    if (!hasContent(data)) { if (getDraft()) dropDraft(); return; }
+    putDraft({ data: data, at: Date.now(), editingId: S.editing ? S.editing.id : null });
+  }
+
+  const timeText = (ms) => {
+    const d = new Date(ms), n = Date.now();
+    const mins = Math.round((n - ms) / 60000);
+    if (mins < 1) return "방금";
+    if (mins < 60) return mins + "분 전";
+    if (n - ms < 86400000) return d.toLocaleTimeString("ko-KR", { hour: "numeric", minute: "2-digit" });
+    return d.toLocaleDateString("ko-KR", { month: "long", day: "numeric" });
+  };
+
+  /** 목록 화면 위쪽 안내 줄 */
+  function renderDraftBar() {
+    const bar = $("draftBar");
+    if (!bar) return;
+    const d = getDraft();
+    if (!d) { bar.innerHTML = ""; return; }
+    const what = isL() ? "매물" : "손님";
+    const label = isL()
+      ? ((d.data.area || "") + " " + (d.data.type || what)).trim()
+      : (d.data.name || what);
+    bar.innerHTML = '<div class="draftbar">' +
+      svg('<path d="M4 20h4l10-10a2.1 2.1 0 0 0-3-3L5 17z"/><path d="M13.5 6.5l3 3"/>') +
+      "<b>" + esc(label) + "</b>" +
+      '<span class="hide-sm">작성하다 만 ' + what + "이 있습니다 · </span><span>" + timeText(d.at) + "</span>" +
+      '<span class="acts">' +
+        '<button class="btn primary" id="dbGo">이어서 쓰기</button>' +
+        '<button class="btn" id="dbDrop">버리기</button>' +
+      "</span></div>";
+    $("dbGo").onclick = () => {
+      const dd = getDraft(); if (!dd) return;
+      const rec = dd.editingId ? list().find((r) => r.id === dd.editingId) : null;
+      openForm(rec || null, dd.data);
+    };
+    $("dbDrop").onclick = () => { dropDraft(); toast("임시저장한 내용을 버렸습니다"); };
+  }
+
+  /* ── 등록 · 수정 ────────────────────────────────────────────────────── */
+  function fld(label, name, o) {
+    o = o || {};
+    const v = o.value == null ? "" : o.value;
+    let inner;
+    if (o.type === "select") {
+      inner = '<select name="' + name + '">' + o.options.map((x) =>
+        '<option value="' + esc(x) + '"' + (String(v) === String(x) ? " selected" : "") + ">" + esc(x || "—") + "</option>").join("") + "</select>";
+    } else if (o.type === "textarea") {
+      inner = '<textarea name="' + name + '" placeholder="' + esc(o.ph || "") + '">' + esc(v) + "</textarea>";
+    } else if (o.type === "picks") {
+      inner = '<div class="picks">' + o.options.map((x) =>
+        "<label><input type=\"checkbox\" name=\"" + name + '" value="' + esc(x) + '"' +
+        ((o.value || []).indexOf(x) >= 0 ? " checked" : "") + ">" + esc(x) + "</label>").join("") + "</div>";
+    } else {
+      inner = '<input name="' + name + '" type="' + (o.type || "text") + '" value="' + esc(v) +
+        '" placeholder="' + esc(o.ph || "") + '"' + (o.step ? ' step="' + o.step + '"' : "") +
+        (o.inputmode ? ' inputmode="' + o.inputmode + '"' : "") + ">";
+    }
+    return '<div class="f' + (o.w ? " w" + o.w : "") + '"><label>' + esc(label) + "</label>" + inner +
+      (o.hint ? '<div class="hint">' + esc(o.hint) + "</div>" : "") + "</div>";
+  }
+  const set = (title, body) => '<div class="fset"><h4>' + title + '</h4><div class="grid">' + body + "</div></div>";
+
+  function openForm(rec, draftData) {
+    S.editing = rec || null;
+    restored = false;
+    $("fTitle").textContent = rec ? (isL() ? "매물 수정" : "손님 수정") : (isL() ? "매물 등록" : "손님 등록");
+    const r = rec || {};
+
+    if (isL()) {
+      $("fBody").innerHTML =
+        set("기본",
+          fld("매물번호", "code", { value: r.code || nextCode() }) +
+          fld("종류", "type", { type: "select", options: TYPES, value: r.type || "원룸" }) +
+          fld("거래유형", "deal", { type: "select", options: DEALS, value: r.deal || "월세" }) +
+          fld("상태", "status", { type: "select", options: L_STATUS, value: r.status || "광고중" }) +
+          fld("지역 · 동네", "area", { w: 2, value: r.area || "", ph: "예) 합성동" }) +
+          fld("건물명 · 상세주소", "building", { w: 2, value: r.building || "", ph: "예) 명성원룸 302호" })) +
+        set("금액 <span style=\"color:var(--label-3);font-weight:400\">— 만원 단위 숫자만</span>",
+          fld("매매가", "sale", { type: "number", inputmode: "numeric", value: r.sale || "", hint: "매매일 때" }) +
+          fld("보증금", "deposit", { type: "number", inputmode: "numeric", value: r.deposit || "", hint: "전세·월세" }) +
+          fld("월세", "rent", { type: "number", inputmode: "numeric", value: r.rent || "" }) +
+          fld("관리비", "fee", { type: "number", inputmode: "numeric", value: r.fee || "" })) +
+        set("상세",
+          fld("면적 (㎡)", "m2", { type: "number", step: "0.1", value: r.m2 || "", hint: "평은 자동 계산" }) +
+          fld("해당 층", "floor", { type: "number", value: r.floor || "" }) +
+          fld("총 층수", "floors", { type: "number", value: r.floors || "" }) +
+          fld("준공년도", "built", { type: "number", value: r.built || "" }) +
+          fld("방 개수", "rooms", { type: "number", value: r.rooms || "" }) +
+          fld("욕실 개수", "baths", { type: "number", value: r.baths || "" }) +
+          fld("주차", "parking", { type: "select", options: ["가능", "불가", "협의"], value: r.parking || "가능" }) +
+          fld("엘리베이터", "elev", { type: "select", options: ["있음", "없음"], value: r.elev || "없음" }) +
+          fld("방향", "dir", { type: "select", options: ["남향", "남동향", "남서향", "동향", "서향", "북향", "-"], value: r.dir || "남향" }) +
+          fld("입주 가능일", "movein", { type: "date", value: r.movein || "" })) +
+        set("의뢰인",
+          fld("이름", "oname", { w: 2, value: r.oname || "" }) +
+          fld("연락처", "ophone", { w: 2, value: r.ophone || "", ph: "010-0000-0000", inputmode: "tel" }) +
+          fld("다음 연락일", "next", { type: "date", value: r.next || "", hint: "그날 '오늘 챙길 일'에 뜹니다" }) +
+          fld("등록일", "created", { type: "date", value: r.created || today() }) +
+          fld("메모", "memo", { w: 4, type: "textarea", value: r.memo || "", ph: "옵션, 특이사항, 협의 내용 등 (소개글에는 안 들어갑니다)" })) +
+        set("계약 · 중개보수 <span style=\"color:var(--label-3);font-weight:400\">— 계약되면 적어 주세요</span>",
+          fld("계약일", "cdate", { type: "date", value: r.cdate || "" }) +
+          fld("잔금일", "bdate", { type: "date", value: r.bdate || "" }) +
+          fld("받을 중개보수 (만원)", "comm", { type: "number", step: "0.1", inputmode: "decimal", value: r.comm || "",
+            hint: legalFee(r) ? "법정 상한 한쪽 " + manDec(legalFee(r).amt) + "만" : "양쪽 합계로 적으세요" }) +
+          fld("보수 받았나요", "paid", { type: "select", options: ["미수", "받음"], value: r.paid || "미수" }));
+    } else {
+      $("fBody").innerHTML =
+        set("손님",
+          fld("이름", "name", { w: 2, value: r.name || "" }) +
+          fld("연락처", "phone", { w: 2, value: r.phone || "", ph: "010-0000-0000", inputmode: "tel" }) +
+          fld("찾는 종류", "wants", { w: 4, type: "picks", options: TYPES, value: r.wants || [] })) +
+        set("조건",
+          fld("거래유형", "deal", { type: "select", options: ["무관"].concat(DEALS), value: r.deal || "무관" }) +
+          fld("상태", "status", { type: "select", options: C_STATUS, value: r.status || "찾는중" }) +
+          fld("예산 하한 (만원)", "bmin", { type: "number", value: r.bmin || "" }) +
+          fld("예산 상한 (만원)", "bmax", { type: "number", value: r.bmax || "", hint: "보증금·매매가 기준" }) +
+          fld("월세 상한 (만원)", "rmax", { type: "number", value: r.rmax || "" }) +
+          fld("입주 희망일", "movein", { type: "date", value: r.movein || "" }) +
+          fld("다음 연락일", "next", { type: "date", value: r.next || "" }) +
+          fld("등록일", "created", { type: "date", value: r.created || today() }) +
+          fld("희망 규모", "size", { w: 2, value: r.size || "", ph: "예) 84㎡ 이상 / 방 3개" }) +
+          fld("희망 지역", "area", { w: 2, value: r.area || "", ph: "예) 합성동·양덕동", hint: "· 로 여러 곳 — 맞는 매물 찾기에 씁니다" }) +
+          fld("메모", "memo", { w: 4, type: "textarea", value: r.memo || "", ph: "요구 조건, 상담 내용 등" }));
+    }
+
+    // 임시저장한 내용이 있으면 채워 넣습니다
+    const d = draftData || (!rec && !draftData && getDraft() && !getDraft().editingId ? getDraft().data : null);
+    if (d) {
+      fillForm(d);
+      restored = true;
+      $("fBody").insertAdjacentHTML("afterbegin",
+        '<div class="draftnote">' + svg('<path d="M4 20h4l10-10a2.1 2.1 0 0 0-3-3L5 17z"/>') +
+        "<span>임시저장해 둔 내용을 불러왔습니다</span>" +
+        '<button type="button" id="fFresh">비우고 새로 쓰기</button></div>');
+      const fresh = $("fFresh");
+      if (fresh) fresh.onclick = () => { dropDraft(); closeForm(); openForm(S.editing); };
+    }
+
+    $("modal").hidden = false;
+    requestAnimationFrame(() => $("modal").classList.add("on"));
+    const first = $("fBody").querySelector("input,select,textarea");
+    if (first && window.matchMedia("(min-width:721px)").matches) first.focus();
+  }
+  function closeForm() {
+    $("modal").classList.remove("on");
+    setTimeout(() => { $("modal").hidden = true; }, 260);
+    S.editing = null;
+  }
+
+  $("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const o = {};
+    fd.forEach((v, k) => { if (k !== "wants") o[k] = typeof v === "string" ? v.trim() : v; });
+    const keys = isL() ? ["sale", "deposit", "rent", "fee", "m2", "floor", "floors", "rooms", "baths", "built", "comm"]
+                       : ["bmin", "bmax", "rmax"];
+    keys.forEach((k) => { o[k] = num(o[k]); });
+    if (!isL()) o.wants = fd.getAll("wants");
+    if (isL() && o.status === "계약완료" && !o.cdate) o.cdate = today();
+
+    if (S.editing) {
+      const target = list().find((x) => x.id === S.editing.id);
+      if (target) { Object.assign(target, o); S.sel = target.id; }
+      else { Object.assign(o, { id: S.editing.id, log: S.editing.log || [] }); list().unshift(o); S.sel = o.id; }
+    }
+    else { o.id = uid(); o.log = []; list().unshift(o); S.sel = o.id; }
+    clearTimeout(draftTimer); dropDraft();
+    const isNew = !S.editing;
+    closeForm(); save(); render(); openDetail();
+    if (isNew) {
+      const rec = current();
+      const n = rec ? (isL() ? matchClients(rec).length : matchListings(rec).length) : 0;
+      toast(n ? "저장했습니다 · " + (isL() ? "맞는 손님 " + n + "명" : "맞는 매물 " + n + "건") + "이 있습니다" : "저장했습니다");
+    } else toast("저장했습니다");
+  });
+
+  /* ── 엑셀 ───────────────────────────────────────────────────────────── */
+  const L_COLS = [
+    ["매물번호", "code"], ["종류", "type"], ["거래유형", "deal"], ["상태", "status"],
+    ["매매가(만원)", "sale"], ["보증금(만원)", "deposit"], ["월세(만원)", "rent"], ["관리비(만원)", "fee"],
+    ["지역", "area"], ["건물·상세주소", "building"], ["면적(㎡)", "m2"], ["면적(평)", "_pyeong"],
+    ["해당층", "floor"], ["총층", "floors"], ["방", "rooms"], ["욕실", "baths"],
+    ["주차", "parking"], ["엘리베이터", "elev"], ["방향", "dir"], ["준공년도", "built"],
+    ["입주가능일", "movein"], ["의뢰인", "oname"], ["연락처", "ophone"], ["등록일", "created"], ["메모", "memo"],
+    ["다음연락일", "next"], ["계약일", "cdate"], ["잔금일", "bdate"], ["중개보수(만원)", "comm"], ["보수수령", "paid"],
+    ["연락기록", "_log"]
+  ];
+  const C_COLS = [
+    ["이름", "name"], ["연락처", "phone"], ["찾는종류", "_wants"], ["거래유형", "deal"], ["상태", "status"],
+    ["예산하한(만원)", "bmin"], ["예산상한(만원)", "bmax"], ["월세상한(만원)", "rmax"],
+    ["희망지역", "area"], ["희망규모", "size"], ["입주희망일", "movein"], ["등록일", "created"], ["메모", "memo"],
+    ["다음연락일", "next"], ["연락기록", "_log"]
+  ];
+
+  function toSheet(arr, cols) {
+    const out = arr.map((r) => {
+      const o = {};
+      cols.forEach(([h, k]) => {
+        o[h] = k === "_pyeong" ? (num(r.m2) ? +pyeong(r.m2) : "")
+             : k === "_wants"  ? (r.wants || []).join(", ")
+             : k === "_log"    ? (r.log || []).map((g) => (g.d || "") + " " + (g.t || "")).join("\n")
+             : (r[k] == null ? "" : r[k]);
+      });
+      return o;
+    });
+    const ws = XLSX.utils.json_to_sheet(out, { header: cols.map((c) => c[0]) });
+    ws["!cols"] = cols.map((c) => ({ wch: (c[0] === "메모" || c[0] === "연락기록") ? 40 : Math.max(10, c[0].length + 3) }));
+    ws["!freeze"] = { xSplit: 0, ySplit: 1 };
+    return ws;
+  }
+
+  /** 지금 장부를 엑셀 통합 문서(xlsx) 덩어리로 만듭니다. */
+  function workbookBlob() {
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, toSheet(S.listings, L_COLS), "매물");
+    XLSX.utils.book_append_sheet(wb, toSheet(S.clients, C_COLS), "손님");
+    const buf = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    return new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+  }
+  const defaultName = () => "신흥부동산_매물장부.xlsx";
+
+  /** 파일로 내려받기 (브라우저가 파일 직접 저장을 지원하지 않을 때) */
+  async function downloadXlsx() {
+    const blob = workbookBlob();
+    const filename = "신흥부동산_매물장부_" + today().replace(/-/g, "") + ".xlsx";
+
+    // 클로드 아티팩트로 열었을 때는 저장 권한을 통해 내려받습니다.
+    const dl = (window.claude && claude.use) ? await claude.use("downloads").catch(() => null) : null;
+    if (dl) {
+      try { await dl.save({ filename, data: blob }); toast("엑셀 파일을 저장했습니다"); }
+      catch (err) { if (!err || err.code !== "declined") toast("저장하지 못했습니다"); }
+      return;
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    dirty = false; lastSaved = new Date(); renderFileBar();
+    toast("엑셀 파일을 내려받았습니다");
+  }
+
+  function fromSheet(ws, cols) {
+    const raw = XLSX.utils.sheet_to_json(ws, { defval: "" });
+    const map = {}; cols.forEach(([h, k]) => { map[h] = k; });
+    return raw.map((r) => {
+      const o = { id: uid() };
+      Object.keys(r).forEach((h) => {
+        const k = map[String(h).trim()];
+        if (!k || k === "_pyeong") return;
+        if (k === "_wants") o.wants = String(r[h]).split(/[,·/]/).map((s) => s.trim()).filter(Boolean);
+        else if (k === "_log") o.log = String(r[h]).split(/\r?\n/).map((line) => line.trim()).filter(Boolean).map((line) => {
+          const m = /^(\d{4}-\d{2}-\d{2})\s*(.*)$/.exec(line);
+          return m ? { d: m[1], t: m[2] } : { d: "", t: line };
+        });
+        else o[k] = r[h];
+      });
+      return o;
+    });
+  }
+
+  /** 읽어 들인 xlsx 내용을 장부에 반영합니다. */
+  function applyWorkbook(arrayBuffer) {
+    const wb = XLSX.read(new Uint8Array(arrayBuffer), { type: "array" });
+    let ls = wb.SheetNames.indexOf("매물") >= 0 ? fromSheet(wb.Sheets["매물"], L_COLS) : [];
+    const cs = wb.SheetNames.indexOf("손님") >= 0 ? fromSheet(wb.Sheets["손님"], C_COLS) : [];
+    if (!ls.length && !cs.length) {
+      const guess = fromSheet(wb.Sheets[wb.SheetNames[0]], L_COLS).filter((r) => r.type || r.area);
+      if (!guess.length) { toast("읽을 수 있는 표를 찾지 못했습니다"); return false; }
+      ls = guess;
+    }
+    if (ls.length) {
+      S.listings = ls;
+      ["sale", "deposit", "rent", "fee", "m2", "floor", "floors", "rooms", "baths", "built", "comm"]
+        .forEach((k) => S.listings.forEach((r) => { r[k] = num(r[k]); }));
+      S.listings.forEach((r) => { r.status = L_STATUS.indexOf(r.status) >= 0 ? r.status : "광고중"; });
+    }
+    if (cs.length) {
+      S.clients = cs;
+      ["bmin", "bmax", "rmax"].forEach((k) => S.clients.forEach((r) => { r[k] = num(r[k]); }));
+      S.clients.forEach((r) => { r.status = C_STATUS.indexOf(r.status) >= 0 ? r.status : "찾는중"; r.wants = r.wants || []; });
+    }
+    S.demo = false; S.sel = null;
+    normalize();
+    closeDetail(); save(); render();
+    toast("매물 " + S.listings.length + "건, 손님 " + S.clients.length + "명을 불러왔습니다");
+    return true;
+  }
+
+  function importBlob(file) {
+    return new Promise((res) => {
+      const total = S.listings.length + S.clients.length;
+      if (total && !S.demo && !confirm("불러온 엑셀 파일로 장부 전체를 바꿉니다." +
+          (user ? "\n구글 계정 장부도 바뀌어 다른 기기에도 똑같이 반영됩니다." : "") + "\n계속할까요?")) return res(false);
+      if (typeof XLSX === "undefined") { toast("엑셀 기능을 불러오지 못했습니다"); return res(false); }
+      const fr = new FileReader();
+      fr.onload = (ev) => {
+        try { res(applyWorkbook(ev.target.result)); }
+        catch (err) { toast("파일을 읽지 못했습니다. 엑셀로 저장한 파일인지 확인해 주세요"); res(false); }
+      };
+      fr.onerror = () => { toast("파일을 읽지 못했습니다"); res(false); };
+      fr.readAsArrayBuffer(file);
+    });
+  }
+
+  /* ── 알림 · 되돌리기 ────────────────────────────────────────────────── */
+  let toastTimer;
+  function toast(msg, action, label) {
+    $("toastMsg").textContent = msg;
+    const btn = $("toastAction");
+    btn.textContent = label || "실행취소";
+    btn.classList.toggle("hidden", !action);
+    btn.onclick = action ? () => { action(); hideToast(); } : null;
+    $("toast").classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, action ? 6000 : 2600);
+  }
+  const hideToast = () => $("toast").classList.remove("on");
+
+  /** 한 건 삭제 — 되돌리기 알림이 함께 뜹니다 */
+  function removeById(id) {
+    const src = list(), tab = S.tab;
+    const i = src.findIndex((r) => r.id === id);
+    if (i < 0) return;
+    const rec = src[i];
+    src.splice(i, 1);
+    const name = isL() ? ((rec.area || "") + " " + (rec.type || "")).trim() : (rec.name || "손님");
+    if (S.sel === id) closeDetail();
+    save(); render();
+    toast(name + " 삭제", () => {
+      const arr = arrOf(tab);
+      if (!arr.some((r) => r.id === rec.id)) arr.splice(Math.min(i, arr.length), 0, rec);
+      save(); render(); toast("되돌렸습니다");
+    });
+  }
+
+  function resetFilters() {
+    S.type = "전체"; S.deals = []; S.status = []; S.q = ""; $("q").value = "";
+    render();
+  }
+
+  /* ── 이벤트 ─────────────────────────────────────────────────────────── */
+  function switchTab(tab) {
+    S.tab = tab; S.type = "전체"; S.deals = []; S.status = []; S.sel = null;
+    closeDetail(); render();
+  }
+  $("tabL").onclick = () => switchTab("listings");
+  $("tabC").onclick = () => switchTab("clients");
+
+  $("rail").addEventListener("click", (e) => {
+    const b = e.target.closest(".side-item"); if (!b) return;
+    S.type = b.dataset.type; render();
+  });
+  $("dealChips").addEventListener("click", (e) => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    const i = S.deals.indexOf(b.dataset.deal);
+    if (i >= 0) S.deals.splice(i, 1); else S.deals.push(b.dataset.deal);
+    renderChips(); renderList();
+  });
+  $("statusChips").addEventListener("click", (e) => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    const i = S.status.indexOf(b.dataset.status);
+    if (i >= 0) S.status.splice(i, 1); else S.status.push(b.dataset.status);
+    renderChips(); renderList();
+  });
+  $("btnReset").onclick = resetFilters;
+  $("q").addEventListener("input", (e) => { S.q = e.target.value; renderChips(); renderList(); });
+  $("sort").addEventListener("change", (e) => { S.sort = e.target.value; renderList(); });
+
+  $("btnAdd").onclick = () => openForm(null);
+  $("fab").onclick = () => openForm(null);
+  $("fCancel").onclick = () => {
+    const data = readForm();
+    if (hasContent(data)) {
+      putDraft({ data: data, at: Date.now(), editingId: S.editing ? S.editing.id : null });
+      closeForm();
+      toast("작성 중이던 내용을 임시저장했습니다", () => { dropDraft(); toast("버렸습니다"); }, "버리기");
+    } else {
+      dropDraft(); closeForm();
+    }
+  };
+  $("fDraft").onclick = () => {
+    const data = readForm();
+    if (!hasContent(data)) { toast("아직 적은 내용이 없습니다"); return; }
+    putDraft({ data: data, at: Date.now(), editingId: S.editing ? S.editing.id : null });
+    closeForm();
+    toast("임시저장했습니다. 목록 위에서 이어 쓰실 수 있습니다");
+  };
+  $("form").addEventListener("input", () => {
+    clearTimeout(draftTimer);
+    draftTimer = setTimeout(keepDraft, 600);
+  });
+  $("modal").addEventListener("mousedown", (e) => { if (e.target === $("modal")) closeForm(); });
+  $("dClose").onclick = closeDetail;
+  $("scrim").onclick = closeDetail;
+  $("dEdit").onclick = () => { const r = current(); if (r) openForm(r); };
+  $("dDup").onclick = () => {
+    const r = current(); if (!r) return;
+    const copy = Object.assign({}, r, { id: uid(), created: today(), log: [], next: "" });
+    if (isL()) Object.assign(copy, { code: nextCode(), cdate: "", bdate: "", comm: 0, paid: "",
+                                     status: r.status === "계약완료" ? "광고중" : r.status });
+    else copy.wants = (r.wants || []).slice();
+    list().unshift(copy); S.sel = copy.id;
+    save(); render(); openDetail(); toast("복제했습니다. 내용을 고쳐 주세요");
+  };
+  $("dDel").onclick = () => removeById(S.sel);
+  $("btnExport").onclick = saveToExcel;
+  $("btnImport").onclick = () => (FSA ? linkOpen() : $("fileInput").click());
+  $("fileInput").addEventListener("change", (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (f) importBlob(f);
+    e.target.value = "";
+  });
+
+  document.addEventListener("keydown", (e) => {
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); $("q").focus(); $("q").select(); return; }
+    if (e.key === "Escape") {
+      if (!$("modal").hidden) closeForm();
+      else if ($("detail").classList.contains("on")) closeDetail();
+      else if (S.q) { S.q = ""; $("q").value = ""; render(); }
+      return;
+    }
+    if (typing) return;
+    if (e.key === "n" || e.key === "ㅜ") { e.preventDefault(); openForm(null); }
+    if (e.key === "/") { e.preventDefault(); $("q").focus(); }
+  });
+
+  // 맥이 아니면 단축키 표시를 Ctrl 로
+  if (!/Mac|iPhone|iPad/.test(navigator.platform || "")) $("kbdHint").textContent = "Ctrl K";
+
+  /* ── 시작 ───────────────────────────────────────────────────────────── */
+  if (!restore()) loadSeed();
+  normalize();
+  // 전에 로그인해 쓰던 기기면 예시가 번쩍 보이지 않도록 바로 '불러오는 중'으로
+  try { if (CLOUD_ON && localStorage.getItem(LAST_UID)) { cloudLoading = true; S.listings = []; S.clients = []; S.demo = false; } } catch (e) {}
+  render();
+  initCloud();
+
+  // 이전에 연결해 둔 엑셀 파일이 있으면 알려 줍니다 (권한 때문에 클릭 한 번 필요)
+  if (FSA) idbGet().then((h) => { if (h) { pendingHandleName = h.name; renderFileBar(); } });
+
+  // 저장 안 된 내용이 있는 채로 창을 닫으려 하면 한 번 물어봅니다
+  window.addEventListener("beforeunload", (e) => {
+    if (!$("modal").hidden) keepDraft();       // 작성 중이면 그대로 보관
+    if (dirty && fileHandle) { e.preventDefault(); e.returnValue = ""; }
+    if (user && inflight && !persistOK) { e.preventDefault(); e.returnValue = ""; }
+  });
+})();
+
+</script>
+</body>
+</html>

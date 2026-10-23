@@ -6,7 +6,15 @@
 <meta name="description" content="신흥 부동산 매물 장부 — 원룸부터 토지까지 매물과 손님을 종류별로 정리하는 중개사무소 관리대장">
 <meta name="theme-color" content="#ffffff">
 <title>신흥 부동산 매물 장부</title>
-<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwMDcxZTMiLz4KICA8cGF0aCBkPSJNMTMgMzAuNSAzMiAxNWwxOSAxNS41VjUwYTIgMiAwIDAgMS0yIDJIMzhWMzcuNUgyNlY1MkgxNWEyIDIgMCAwIDEtMi0yeiIgZmlsbD0iI2ZmZiIvPgo8L3N2Zz4K" type="image/svg+xml">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icons/favicon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="신흥부동산">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="application-name" content="신흥부동산">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 /* ==========================================================================
@@ -400,6 +408,18 @@ tbody tr:hover .xbtn, .row:hover .xbtn, .xbtn:focus-visible{opacity:1}
   outline:none; background:var(--surface); border-color:var(--tint); box-shadow:0 0 0 4px var(--tint-wash);
 }
 .f .hint{font-size:11.5px; color:var(--label-3); padding-left:2px}
+/* 숫자 칸: 키보드로 치거나, 휴대폰 숫자판·−/+ 단추로 넣기 */
+.f input.numin{font-variant-numeric:tabular-nums; text-align:right}
+.f .read{font-size:12px; color:var(--tint-press); font-weight:600; padding-left:2px; min-height:15px}
+.f .read:empty{display:none}
+.stepper{display:flex; align-items:stretch; gap:6px}
+.stepper input{flex:1; min-width:0; text-align:center !important}
+.stepper button{
+  flex:none; width:38px; border:none; border-radius:10px; background:var(--fill); color:var(--label);
+  font-size:20px; line-height:1; cursor:pointer; touch-action:manipulation; -webkit-user-select:none; user-select:none;
+}
+.stepper button:hover{background:var(--fill-2, var(--fill))}
+.stepper button:active{background:var(--tint); color:var(--on-tint)}
 .picks{display:flex; flex-wrap:wrap; gap:6px}
 .picks label{
   display:inline-flex; align-items:center; gap:6px; cursor:pointer;
@@ -443,6 +463,7 @@ tbody tr:hover .xbtn, .row:hover .xbtn, .xbtn:focus-visible{opacity:1}
   .toast.on{transform:none}
   /* 손가락으로 누르기 편한 크기 */
   .f input, .f select, .f textarea{height:42px; font-size:16px}   /* 16px 이상이라야 아이폰에서 확대되지 않습니다 */
+  .stepper button{width:44px; font-size:22px}
   .f textarea{height:auto; min-height:88px}
   .picks label{padding:9px 15px; font-size:14px}
   .sheet-head{padding:12px}
@@ -704,6 +725,24 @@ svg.g{width:16px; height:16px; stroke:none}
 }
 @media print{ .acct,.acctmenu,.loginbar{display:none !important} }
 
+/* ---------- 앱 설치 ---------- */
+.brand-logo{width:30px; height:30px; border-radius:8px; flex:none; display:block}
+.btn.install{background:var(--tint-wash); color:var(--tint-press)}
+.btn.install:hover{background:color-mix(in srgb, var(--tint) 18%, transparent)}
+.instguide{position:fixed; inset:0; z-index:90; display:flex; align-items:flex-end; justify-content:center; background:rgba(0,0,0,.35); padding:16px}
+.instguide[hidden]{display:none}
+.instcard{width:min(420px,100%); background:var(--surface); border-radius:20px; padding:20px 20px calc(18px + env(safe-area-inset-bottom)); box-shadow:var(--shadow-3)}
+.instcard .ihead{display:flex; align-items:center; gap:12px; margin-bottom:14px}
+.instcard .ihead img{width:52px; height:52px; border-radius:12px}
+.instcard .ihead b{display:block; font-size:16px}
+.instcard .ihead span{font-size:12.5px; color:var(--label-2)}
+.instcard ol{margin:0 0 16px; padding-left:20px; font-size:14px; line-height:1.7}
+.instcard ol b{color:var(--tint-press)}
+.instcard .btn{width:100%; height:42px}
+@media (min-width:721px){ .instguide{align-items:center} }
+@media (max-width:720px){ .btn.install span{display:none} }
+@media print{ .btn.install,.instguide{display:none !important} }
+
 </style>
 </head>
 <body>
@@ -712,7 +751,7 @@ svg.g{width:16px; height:16px; stroke:none}
 <header class="topbar">
   <div class="topbar-inner">
     <div class="brand">
-      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.6 12 3.5l9 7.1V20a1 1 0 0 1-1 1h-5.2v-6.1H9.2V21H4a1 1 0 0 1-1-1z"/></svg>
+      <img class="brand-logo" src="icons/favicon-64.png" alt="" width="30" height="30">
       <span class="brand-text"><b>신흥 부동산</b><i>매물 장부</i></span>
     </div>
 
@@ -725,6 +764,10 @@ svg.g{width:16px; height:16px; stroke:none}
     <div class="top-actions">
       <span class="saved" id="savedTag" aria-live="polite"></span>
       <span class="acct" id="acct"></span>
+      <button class="btn install" id="btnInstall" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3" width="11" height="18" rx="2.5"/><path d="M12 8v6.5m0 0-2.6-2.6M12 14.5l2.6-2.6"/></svg>
+        <span>앱 설치</span>
+      </button>
       <button class="btn" id="btnImport">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5V4m0 11.5-3.6-3.6M12 15.5l3.6-3.6M4.5 16v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>
         <span>엑셀 열기</span>
@@ -830,6 +873,7 @@ svg.g{width:16px; height:16px; stroke:none}
 <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden>
 
 <div class="acctmenu" id="acctMenu" hidden></div>
+<div class="instguide" id="instGuide" hidden></div>
 
 <div class="toast" id="toast" role="status" aria-live="polite">
   <span id="toastMsg"></span>
@@ -837,20 +881,11 @@ svg.g{width:16px; height:16px; stroke:none}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<!-- 구글 로그인 설정은 firebase-config.js 파일에 따로 둡니다.
+     (index.html을 새로 바꿔 올려도 설정을 다시 넣지 않아도 됩니다) -->
+<script src="firebase-config.js"></script>
 <script>
-/* ==========================================================================
-   구글 로그인 설정 — 여기만 채우면 로그인·동기화가 켜집니다.
-   Firebase 콘솔(console.firebase.google.com) → 프로젝트 설정 → 내 앱(웹)에 있는
-   firebaseConfig 값을 그대로 붙여넣으세요. 비워 두면 예전처럼 이 기기에만 저장됩니다.
-   ========================================================================== */
-window.FIREBASE_CONFIG = {
-  apiKey: "AIzaSyDv6PUOHN0TTn8LzvZtLGk0-n1FRyZY_yQ",
-  authDomain: "new-property-2def2.firebaseapp.com",
-  projectId: "new-property-2def2",
-  storageBucket: "new-property-2def2.firebasestorage.app",
-  messagingSenderId: "302050389164",
-  appId: "1:302050389164:web:a0efb34c2ce43491754309"
-};
+  window.FIREBASE_CONFIG = window.FIREBASE_CONFIG || {};
 </script>
 <script>
 /* ==========================================================================
@@ -1777,6 +1812,58 @@ window.SEED = {
     $("lbLater").onclick = () => { try { localStorage.setItem(LOGIN_LATER, "1"); } catch (e) {} renderLoginBar(); };
   }
 
+
+  /* ── 앱 설치 (휴대폰 홈 화면 · PC 바탕화면) ───────────────────────────
+     크롬·엣지·삼성인터넷: [앱 설치] 단추 → 바로 설치 창
+     아이폰(사파리): 공유 → '홈 화면에 추가' 안내
+     이미 앱으로 열려 있으면 단추를 숨깁니다. */
+  let installEvt = null;
+  const UA = navigator.userAgent;
+  const IS_IOS = /iPhone|iPad|iPod/.test(UA) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const STANDALONE = () => window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+
+  function showInstallBtn(on) { const b = $("btnInstall"); if (b) b.hidden = !on || STANDALONE(); }
+
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
+  }
+  window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); installEvt = e; showInstallBtn(true); });
+  window.addEventListener("appinstalled", () => {
+    installEvt = null; showInstallBtn(false);
+    toast("설치했습니다. 홈 화면(바탕화면)의 신흥부동산 아이콘으로 여세요");
+  });
+  if (IS_IOS || IN_APP) showInstallBtn(true);      // 아이폰·카톡 안 브라우저는 안내로
+
+  function guide(title, sub, steps) {
+    const g = $("instGuide");
+    g.innerHTML = '<div class="instcard" role="dialog" aria-label="앱 설치 방법">' +
+      '<div class="ihead"><img src="icons/apple-touch-icon.png" alt=""><div><b>' + title + "</b><span>" + sub + "</span></div></div>" +
+      "<ol>" + steps.map((x) => "<li>" + x + "</li>").join("") + "</ol>" +
+      '<button class="btn primary" id="instOk">확인</button></div>';
+    g.hidden = false;
+    $("instOk").onclick = () => { g.hidden = true; };
+    g.onclick = (e) => { if (e.target === g) g.hidden = true; };
+  }
+
+  $("btnInstall").onclick = async () => {
+    if (installEvt) {
+      installEvt.prompt();
+      const r = await installEvt.userChoice.catch(() => null);
+      if (r && r.outcome === "accepted") showInstallBtn(false);
+      installEvt = null;
+      return;
+    }
+    if (IN_APP) {
+      guide("크롬·사파리에서 열어 주세요", "카카오톡·네이버 앱 안에서는 설치가 안 됩니다",
+        ["오른쪽 위(또는 아래) <b>⋮ / ⋯</b> 메뉴를 누릅니다", "<b>다른 브라우저로 열기</b>를 누릅니다", "열린 화면에서 <b>앱 설치</b>를 다시 누릅니다"]);
+    } else if (IS_IOS) {
+      guide("아이폰 홈 화면에 추가", "사파리에서만 됩니다",
+        ["화면 아래 <b>공유 단추(□↑)</b>를 누릅니다", "목록을 내려 <b>홈 화면에 추가</b>를 누릅니다", "오른쪽 위 <b>추가</b>를 누르면 끝입니다"]);
+    } else {
+      guide("앱으로 설치하기", "크롬·엣지·삼성인터넷에서 됩니다",
+        ["주소창 오른쪽의 <b>설치 아이콘(⊕ 또는 모니터 모양)</b>을 누릅니다", "휴대폰은 <b>⋮ 메뉴 → 홈 화면에 추가 / 앱 설치</b>를 누릅니다", "<b>설치</b>를 누르면 바탕화면·홈 화면에 아이콘이 생깁니다"]);
+    }
+  };
   /* ── 거르기 · 정렬 ──────────────────────────────────────────────────── */
   function visible() {
     let arr = list().slice();
@@ -2362,6 +2449,7 @@ window.SEED = {
       if (!el || !("value" in el)) return;
       el.value = o[k];
     });
+    formatAll();
   }
   /** 사람이 실제로 뭔가 적었는지 — 자동으로 채워진 기본값은 빼고 봅니다. */
   function hasContent(o) {
@@ -2431,10 +2519,24 @@ window.SEED = {
       inner = '<div class="picks">' + o.options.map((x) =>
         "<label><input type=\"checkbox\" name=\"" + name + '" value="' + esc(x) + '"' +
         ((o.value || []).indexOf(x) >= 0 ? " checked" : "") + ">" + esc(x) + "</label>").join("") + "</div>";
+    } else if (o.type === "number") {
+      const kind = o.kind || "money";                       // money · dec · int · year
+      const shown = kind === "money" ? fmtNum(v, o.dec) : (v === 0 || v ? String(v) : "");
+      const box = '<input name="' + name + '" type="text" class="numin" data-kind="' + kind + '"' +
+        (o.dec ? ' data-dec="1"' : "") + (o.neg ? ' data-neg="1"' : "") +
+        ' inputmode="' + (o.dec || kind === "dec" ? "decimal" : "numeric") + '"' +
+        (o.dec || kind === "dec" || o.neg ? "" : ' pattern="[0-9,]*"') +
+        ' enterkeyhint="next" autocomplete="off" value="' + esc(shown) + '" placeholder="' + esc(o.ph || "") + '">';
+      inner = o.stepper
+        ? '<div class="stepper"><button type="button" data-step="-1" aria-label="' + esc(label) + ' 하나 줄이기">−</button>' + box +
+          '<button type="button" data-step="1" aria-label="' + esc(label) + ' 하나 늘리기">+</button></div>'
+        : box;
+      inner += (kind === "money" || kind === "dec") ? '<div class="read" data-read="' + name + '"></div>' : "";
     } else {
       inner = '<input name="' + name + '" type="' + (o.type || "text") + '" value="' + esc(v) +
         '" placeholder="' + esc(o.ph || "") + '"' + (o.step ? ' step="' + o.step + '"' : "") +
-        (o.inputmode ? ' inputmode="' + o.inputmode + '"' : "") + ">";
+        (o.inputmode ? ' inputmode="' + o.inputmode + '"' : "") +
+        (o.inputmode === "tel" ? ' type="tel" data-kind="tel" autocomplete="tel" enterkeyhint="next"' : "") + ">";
     }
     return '<div class="f' + (o.w ? " w" + o.w : "") + '"><label>' + esc(label) + "</label>" + inner +
       (o.hint ? '<div class="hint">' + esc(o.hint) + "</div>" : "") + "</div>";
@@ -2457,17 +2559,17 @@ window.SEED = {
           fld("지역 · 동네", "area", { w: 2, value: r.area || "", ph: "예) 합성동" }) +
           fld("건물명 · 상세주소", "building", { w: 2, value: r.building || "", ph: "예) 명성원룸 302호" })) +
         set("금액 <span style=\"color:var(--label-3);font-weight:400\">— 만원 단위 숫자만</span>",
-          fld("매매가", "sale", { type: "number", inputmode: "numeric", value: r.sale || "", hint: "매매일 때" }) +
-          fld("보증금", "deposit", { type: "number", inputmode: "numeric", value: r.deposit || "", hint: "전세·월세" }) +
-          fld("월세", "rent", { type: "number", inputmode: "numeric", value: r.rent || "" }) +
-          fld("관리비", "fee", { type: "number", inputmode: "numeric", value: r.fee || "" })) +
+          fld("매매가", "sale", { type: "number", value: r.sale || "", hint: "매매일 때" }) +
+          fld("보증금", "deposit", { type: "number", value: r.deposit || "", hint: "전세·월세" }) +
+          fld("월세", "rent", { type: "number", value: r.rent || "" }) +
+          fld("관리비", "fee", { type: "number", value: r.fee || "" })) +
         set("상세",
-          fld("면적 (㎡)", "m2", { type: "number", step: "0.1", value: r.m2 || "", hint: "평은 자동 계산" }) +
-          fld("해당 층", "floor", { type: "number", value: r.floor || "" }) +
-          fld("총 층수", "floors", { type: "number", value: r.floors || "" }) +
-          fld("준공년도", "built", { type: "number", value: r.built || "" }) +
-          fld("방 개수", "rooms", { type: "number", value: r.rooms || "" }) +
-          fld("욕실 개수", "baths", { type: "number", value: r.baths || "" }) +
+          fld("면적 (㎡)", "m2", { type: "number", kind: "dec", value: r.m2 || "" }) +
+          fld("해당 층", "floor", { type: "number", kind: "int", neg: true, stepper: true, value: r.floor || "", hint: "지하는 −1" }) +
+          fld("총 층수", "floors", { type: "number", kind: "int", stepper: true, value: r.floors || "" }) +
+          fld("준공년도", "built", { type: "number", kind: "year", value: r.built || "", ph: "예) 2016" }) +
+          fld("방 개수", "rooms", { type: "number", kind: "int", stepper: true, value: r.rooms || "" }) +
+          fld("욕실 개수", "baths", { type: "number", kind: "int", stepper: true, value: r.baths || "" }) +
           fld("주차", "parking", { type: "select", options: ["가능", "불가", "협의"], value: r.parking || "가능" }) +
           fld("엘리베이터", "elev", { type: "select", options: ["있음", "없음"], value: r.elev || "없음" }) +
           fld("방향", "dir", { type: "select", options: ["남향", "남동향", "남서향", "동향", "서향", "북향", "-"], value: r.dir || "남향" }) +
@@ -2481,7 +2583,7 @@ window.SEED = {
         set("계약 · 중개보수 <span style=\"color:var(--label-3);font-weight:400\">— 계약되면 적어 주세요</span>",
           fld("계약일", "cdate", { type: "date", value: r.cdate || "" }) +
           fld("잔금일", "bdate", { type: "date", value: r.bdate || "" }) +
-          fld("받을 중개보수 (만원)", "comm", { type: "number", step: "0.1", inputmode: "decimal", value: r.comm || "",
+          fld("받을 중개보수 (만원)", "comm", { type: "number", dec: true, value: r.comm || "",
             hint: legalFee(r) ? "법정 상한 한쪽 " + manDec(legalFee(r).amt) + "만" : "양쪽 합계로 적으세요" }) +
           fld("보수 받았나요", "paid", { type: "select", options: ["미수", "받음"], value: r.paid || "미수" }));
     } else {
@@ -2517,6 +2619,7 @@ window.SEED = {
       if (fresh) fresh.onclick = () => { dropDraft(); closeForm(); openForm(S.editing); };
     }
 
+    formatAll();
     $("modal").hidden = false;
     requestAnimationFrame(() => $("modal").classList.add("on"));
     const first = $("fBody").querySelector("input,select,textarea");
@@ -2527,6 +2630,116 @@ window.SEED = {
     setTimeout(() => { $("modal").hidden = true; }, 260);
     S.editing = null;
   }
+
+
+  /* ── 숫자 입력 ─────────────────────────────────────────────────────────
+     PC: 키보드로 그냥 치면 됩니다 (쉼표는 알아서 찍힘, 마우스 휠로 값이 바뀌지 않음).
+     휴대폰: 누르면 숫자판이 뜨고, 층·방·욕실은 −/+ 단추로도 넣을 수 있습니다.
+     엔터(휴대폰 '다음')를 누르면 다음 칸으로 넘어갑니다. */
+  function fmtNum(v, dec) {
+    const raw = String(v == null ? "" : v).replace(/,/g, "");
+    if (raw === "" || raw === "-") return raw;
+    const m = /^(-?)(\d*)(\.\d*)?$/.exec(raw);
+    if (!m) return raw;
+    const int = m[2] ? String(parseInt(m[2], 10)).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : (m[3] ? "0" : "");
+    return m[1] + int + (dec && m[3] ? m[3].slice(0, 2) : "");
+  }
+  function cleanNum(el) {
+    const kind = el.dataset.kind, dec = el.dataset.dec || kind === "dec", neg = el.dataset.neg;
+    // 전각 숫자·한글 자판 실수 등은 걸러 내고 숫자만 남깁니다
+    let v = el.value.replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 65248)).replace(/[。．]/g, ".");
+    v = v.replace(dec ? /[^\d.\-]/g : /[^\d\-]/g, "");
+    v = (neg && v.charAt(0) === "-" ? "-" : "") + v.replace(/-/g, "");
+    if (dec) { const i = v.indexOf("."); if (i >= 0) v = v.slice(0, i + 1) + v.slice(i + 1).replace(/\./g, ""); }
+    if (kind === "year") v = v.slice(0, 4);
+    if (kind === "int") v = v.slice(0, 3);
+    return v;
+  }
+  function fmtTel(v) {
+    const d = String(v).replace(/\D/g, "").slice(0, 11);
+    if (/^02/.test(d)) return d.length < 3 ? d : d.length < 6 ? d.slice(0, 2) + "-" + d.slice(2)
+      : d.length < 10 ? d.slice(0, 2) + "-" + d.slice(2, 5) + "-" + d.slice(5) : d.slice(0, 2) + "-" + d.slice(2, 6) + "-" + d.slice(6);
+    if (d.length < 4) return d;
+    if (d.length < 8) return d.slice(0, 3) + "-" + d.slice(3);
+    if (d.length < 11) return d.slice(0, 3) + "-" + d.slice(3, 6) + "-" + d.slice(6);
+    return d.slice(0, 3) + "-" + d.slice(3, 7) + "-" + d.slice(7);
+  }
+  /** 칸 아래에 '2억 5,000만원' · '25.4평' 처럼 읽어 줍니다 */
+  function readOut(el) {
+    const box = $("form").querySelector('[data-read="' + el.name + '"]');
+    if (!box) return;
+    const v = num(el.value);
+    if (!el.value || !v) { box.textContent = el.dataset.kind === "dec" ? "평은 자동 계산" : ""; return; }
+    box.textContent = el.dataset.kind === "dec" ? "= " + pyeong(v) + "평" : "= " + man(v) + "만원";
+  }
+  /** 글자를 다시 쓰면서도 커서가 튀지 않게 — 커서 앞의 숫자 개수를 기준으로 되돌립니다 */
+  function reformat(el, next) {
+    if (el.value === next) return;
+    const keep = el.dataset.kind === "tel" ? /\d/ : /[\d.\-]/;      // 전화번호의 '-'는 저절로 붙는 것이라 안 셉니다
+    const pos = el.selectionStart == null ? el.value.length : el.selectionStart;
+    let before = 0;
+    for (let k = 0; k < pos; k++) if (keep.test(el.value[k])) before++;
+    el.value = next;
+    let i = 0, seen = 0;
+    while (i < next.length && seen < before) { if (keep.test(next[i])) seen++; i++; }
+    try { if (document.activeElement === el) el.setSelectionRange(i, i); } catch (e) {}
+  }
+  function formatField(el) {
+    const kind = el.dataset.kind;
+    if (kind === "tel") return reformat(el, fmtTel(el.value));
+    const v = cleanNum(el);
+    reformat(el, kind === "money" ? fmtNum(v, el.dataset.dec) : v);
+    readOut(el);
+  }
+  function formatAll() {
+    $("form").querySelectorAll("input[data-kind]").forEach(formatField);
+  }
+
+  $("form").addEventListener("input", (e) => {
+    const el = e.target;
+    if (el.dataset && el.dataset.kind && !e.isComposing) formatField(el);
+  }, true);
+  $("form").addEventListener("compositionend", (e) => {
+    if (e.target.dataset && e.target.dataset.kind) formatField(e.target);
+  });
+  // −/+ 단추 (누르고 있으면 계속)
+  let holdT = null, lastPress = 0;
+  function bump(btn) {
+    const el = btn.parentNode.querySelector("input");
+    let v = parseInt(String(el.value).replace(/[^\d\-]/g, ""), 10);
+    if (!isFinite(v)) v = 0;
+    v += +btn.dataset.step;
+    if (!el.dataset.neg && v < 0) v = 0;
+    if (v > 999) v = 999;
+    el.value = String(v);
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+  const stopHold = () => { clearTimeout(holdT); clearInterval(holdT); holdT = null; };
+  $("form").addEventListener("pointerdown", (e) => {
+    const btn = e.target.closest && e.target.closest("[data-step]");
+    if (!btn) return;
+    e.preventDefault();                        // 휴대폰에서 자판이 내려가지 않게
+    lastPress = Date.now();
+    bump(btn);
+    stopHold();
+    holdT = setTimeout(() => { holdT = setInterval(() => bump(btn), 90); }, 450);
+  });
+  ["pointerup", "pointercancel", "pointerleave"].forEach((t) => $("form").addEventListener(t, stopHold));
+  $("form").addEventListener("click", (e) => {
+    const btn = e.target.closest && e.target.closest("[data-step]");
+    if (btn && Date.now() - lastPress > 700) bump(btn);   // 키보드(스페이스·엔터)로 누른 경우만 — 손가락·마우스는 위에서 처리
+  });
+  // 엔터 → 다음 칸 (마지막 칸이면 저장)
+  $("form").addEventListener("keydown", (e) => {
+    const el = e.target;
+    if (e.key !== "Enter" || e.isComposing || el.tagName !== "INPUT" || el.type === "checkbox") return;
+    if (e.ctrlKey || e.metaKey) return;
+    e.preventDefault();
+    const all = Array.from($("form").querySelectorAll("input:not([type=checkbox]):not([type=hidden]), select, textarea"))
+      .filter((x) => !x.disabled && x.offsetParent !== null);
+    const nx = all[all.indexOf(el) + 1];
+    if (nx) { nx.focus(); } else { $("form").requestSubmit ? $("form").requestSubmit() : $("form").dispatchEvent(new Event("submit", { cancelable: true })); }
+  });
 
   $("form").addEventListener("submit", (e) => {
     e.preventDefault();

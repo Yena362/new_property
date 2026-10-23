@@ -1,9 +1,9 @@
 /* 신흥부동산 장부 — 앱 설치·오프라인용
    ─ 장부 화면은 항상 인터넷에서 최신 것을 먼저 받고, 끊겼을 때만 저장해 둔 화면을 씁니다.
    ─ 로그인·장부 데이터(구글/Firebase)는 여기서 건드리지 않습니다. */
-const CACHE = "sinheung-v1";
+const CACHE = "sinheung-v2";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "firebase-config.js",
-  "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png", "icons/favicon-32.png", "icons/favicon-64.png"];
+  "icon-192.png", "icon-512.png", "apple-touch-icon.png", "favicon-32.png", "favicon-64.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => Promise.all(SHELL.map((u) => c.add(u).catch(() => {})))));
